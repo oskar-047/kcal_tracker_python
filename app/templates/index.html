@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MacroTrack — Daily Recap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- global stylesheet to add later -->
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="page">
+  <header class="header">
+    <h1 class="app-title">MacroTrack</h1>
+  </header>
+
+  <main class="container">
+    <!-- Today recap -->
+    <section class="today-card" aria-labelledby="today-title">
+      <h2 id="today-title">Today</h2>
+      <div class="kcal-big" aria-label="Calories today">
+        {{ today.kcal or 0 }} kcal
+      </div>
+
+      <div class="macros-grid">
+        <div class="macro metric-protein">
+          <span class="label">Protein</span>
+          <span class="value">{{ today.protein or 0 }} g</span>
+        </div>
+        <div class="macro metric-carbs">
+          <span class="label">Carbs</span>
+          <span class="value">{{ today.carbs or 0 }} g</span>
+        </div>
+        <div class="macro metric-fats">
+          <span class="label">Fats</span>
+          <span class="value">{{ today.fats or 0 }} g</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="/meals/track">Track Food</a>
+        <a class="btn btn-primary" href="/food/new">Add Food</a>
+      </div>
+    </section>
+
+    <!-- History list -->
+    <section class="history" aria-labelledby="history-title">
+      <h2 id="history-title">History</h2>
+
+      {% if days and days|length > 0 %}
+        <ul class="day-list">
+          {% for d in days %}
+          <li class="day-item">
+            <div class="day-date">{{ d.date }}</div>
+            <div class="day-kcal">kcal: {{ d.kcal }}</div>
+            <div class="day-macros">
+              <div>protein: {{ d.protein }} g</div>
+              <div>fats: {{ d.fats }} g</div>
+              <div>carbs: {{ d.carbs }} g</div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No entries yet.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
