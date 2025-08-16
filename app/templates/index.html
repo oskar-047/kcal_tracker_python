@@ -14,7 +14,7 @@
 
   <main class="container">
     <!-- Today recap -->
-    <section class="today-card" aria-labelledby="today-title">
+    <section class="card" aria-labelledby="today-title">
       <h2 id="today-title">Today</h2>
       <div class="kcal-big" aria-label="Calories today">
         {{ today.kcal or 0 }} kcal
@@ -38,6 +38,7 @@
       <div class="actions">
         <a class="btn btn-primary" href="/meals/track">Track Food</a>
         <a class="btn btn-primary" href="/food/new">Add Food</a>
+        <a class="btn btn-primary" href="/food/list">List Foods</a>
       </div>
     </section>
 

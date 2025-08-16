@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food List – MacroTrack</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/delete-check.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <a href="/" class="btn btn-back">← Back</a>
+    <div class="app-title">Food List</div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2 id="history-title">Foods</h2>
+
+      {% if foods %}
+      <div class="table-wrapper">
+        <table class="food-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Kcal</th>
+              <th>Protein</th>
+              <th>Carbs</th>
+              <th>Fats  </th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for food in foods %}
+            {% if food.is_deleted == 0 %}
+            <tr>
+              <td>{{ food.id }}</td>
+              <td>{{ food.name }}</td>
+              <td>{{ food.kcal }}</td>
+              <td>{{ food.protein }}</td>
+              <td>{{ food.carbs }}</td>
+              <td>{{ food.fats }}</td>
+              <td>
+                <a class="btn btn-delete" href="/food/delete/{{ food.id }}" data-name="{{ food.name }}">Delete</a>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="empty">No foods found</p>
+      {% endif %}
+    </div>
+  </main>
+</body>
+
+</html>

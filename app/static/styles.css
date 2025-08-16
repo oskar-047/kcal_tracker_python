@@ -42,16 +42,19 @@ body{
   background: rgba(15,18,22,.7);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;   /* centers children vertically */
+  padding: 10px 12px;  
 }
 .app-title{
   text-align:center;
   font-size: clamp(18px, 2.2vw, 24px);
-  padding: 14px 0;
+  flex: 1;
   font-weight: 700;
 }
 
 /* Card */
-.today-card{
+.card{
   background: var(--bg-elev);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -204,4 +207,41 @@ form input:focus{
 /* Prefer reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Table styles */
+.table-wrapper {
+  overflow-x: auto;
+}
+.food-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.food-table th,
+.food-table td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: left;
+}
+.food-table th {
+  background: var(--bg-elev);
+  color: var(--muted);
+  font-weight: 600;
+}
+.food-table tr:nth-child(even) {
+  background: var(--card);
+}
+.food-table tr:hover {
+  background: color-mix(in oklab, var(--accent) 15%, var(--bg) 85%);
+}
+
+.btn-delete{ 
+  padding: 4px 8px;
+  border-radius: 7px;
+}
+
+td a {
+  display: inline-block; 
+
 }
