@@ -2,16 +2,16 @@ import sqlite3
 from pathlib import Path
 from db.database import DB_PATH
 from db.models import init_db
-from db.migrations import migration_1, migration_2
+# from db.migrations import migration_1, migration_2
 
 
 # Current database version
-LATEST_VERSION = 2
+LATEST_VERSION = 0
 
 # Dictionary with migration functions
 MIGRATIONS = {
-    1: migration_1,
-    2: migration_2
+    # 1: migration_1,
+    # 2: migration_2
 }
 
 def run_migrations():

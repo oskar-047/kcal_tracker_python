@@ -9,7 +9,8 @@
 </head>
 <body class="page">
   <header class="header">
-    <h1 class="app-title">MacroTrack</h1>
+    <a href="/change-lan/{{ user['id'] }}" class="btn btn-back">{{ t("index.header.change-lan") }}</a>
+    <h1 class="app-title">{{ t("index.header.title") }}</h1>
   </header>
 
   <main class="container">
@@ -22,15 +23,15 @@
 
       <div class="macros-grid">
         <div class="macro metric-protein">
-          <span class="label">Protein</span>
+          <span class="label">{{ t("index.macros-grid.protein") }}</span>
           <span class="value">{{ today.protein or 0 }} g</span>
         </div>
         <div class="macro metric-carbs">
-          <span class="label">Carbs</span>
+          <span class="label">{{ t("index.macros-grid.carbs") }}</span>
           <span class="value">{{ today.carbs or 0 }} g</span>
         </div>
         <div class="macro metric-fats">
-          <span class="label">Fats</span>
+          <span class="label">{{ t("index.macros-grid.fats") }}</span>
           <span class="value">{{ today.fats or 0 }} g</span>
         </div>
       </div>
