@@ -4,47 +4,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Food – MacroTrack</title>
+  <title>{{ t("food-create.head.title") }}</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
   <header class="header">
-    <a href="/" class="btn btn-back">← Back</a>
-    <div class="app-title">Create New Food</div>
+    <a href="/" class="btn btn-back">← {{ t("food-create.header.back") }}</a>
+    <div class="app-title">{{ t("food-create.header.title") }}</div>
   </header>
 
   <main class="container">
-    <form action="/create-new-food" method="POST" class="card" autocomplete="off">
-      <label for="name">Food Name</label>
+    <form action="/actions/create-food" method="POST" class="card" autocomplete="off">
+      <label for="name">{{ t("food-create.form.name.label") }}</label>
       <input type="text" id="name" name="name" required>
 
-      <label for="kcal">Kcal (per 100g/ml)</label>
+      <label for="kcal">{{ t("food-create.form.kcal.label") }}</label>
       <input type="number" id="kcal" name="kcal" step="1" min="0"
         oninput="this.value = this.value.replace(/\./g, '').replace(/,/g, '');" required>
 
-      <label for="protein">Protein (g)</label>
+      <label for="protein">{{ t("food-create.form.protein.label") }}</label>
       <input type="number" id="protein" name="protein" step="0.1" min="0" required>
 
-      <label for="carbs">Carbs (g)</label>
+      <label for="carbs">{{ t("food-create.form.carbs.label") }}</label>
       <input type="number" id="carbs" name="carbs" step="0.1" min="0" required>
 
-      <label for="fats">Fats (g)</label>
+      <label for="fats">{{ t("food-create.form.fats.label") }}</label>
       <input type="number" id="fats" name="fats" step="0.1" min="0" required>
 
       <div class="actions">
-        <button type="submit" class="btn">Create Food</button>
+        <button type="submit" class="btn">{{ t("food-create.form.submit") }}</button>
       </div>
     </form>
   </main>
 
   {% if food %}
   <script>
-    alert('The food {{ food[0] }} with \n{{ food[1] }} kcal \n{{ food[2] }} protein \n{{ food[3] }} carbs \n{{ food[4] }} fats was succesfully tracked')
+    alert('{{ t("food-create.alert.prefix") }} {{ food[0] }} {{ t("food-create.alert.with") }} \n{{ food[1] }} {{ t("food-create.alert.kcal") }} \n{{ food[2] }} {{ t("food-create.alert.protein") }} \n{{ food[3] }} {{ t("food-create.alert.carbs") }} \n{{ food[4] }} {{ t("food-create.alert.fats") }} {{ t("food-create.alert.suffix") }}');
   </script>
   {% endif %}
-
-
 </body>
 
 </html>

@@ -7,15 +7,18 @@ from db.database import get_db
 
 router = APIRouter()
 
+# --- SHOWS CREATE FOOD HTML
 @router.get("/food/new", response_class=HTMLResponse)
 def show_new_food_HTML(request: Request):
     return templates.TemplateResponse(
         "create-food.html",
         {
             "request": request,
+            "t": request.state.t
         }
     )
 
+# --- SHOWS FOOD HTML
 @router.get("/food/list", response_class=HTMLResponse)
 def show_new_food_HTML(request: Request, conn = Depends(get_db)):
 
@@ -29,15 +32,9 @@ def show_new_food_HTML(request: Request, conn = Depends(get_db)):
         "list-foods.html",
         {
             "request": request,
+            "t": request.state.t,
             "foods": user_food_database
         }
     )
 
-@router.get("/food/delete/{id}")
-def delete_food(request: Request, id: int, conn = Depends(get_db)):
-    
-    conn.execute("UPDATE user_food SET is_deleted = 1 WHERE id = ?", (id,))
 
-    conn.commit()
-
-    return RedirectResponse(url="/food/list", status_code=303)

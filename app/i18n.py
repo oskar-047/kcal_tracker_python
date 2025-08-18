@@ -47,6 +47,3 @@ class I18n:
         return key
 
 
-# This function returns a function with a fixed lan used by jinja2 on the templates
-def make_t(i18n: I18n, lan):
-    return lambda key, **vars: i18n.t(key, lan, **vars)

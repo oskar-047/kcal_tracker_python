@@ -4,33 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food List – MacroTrack</title>
+  <title>{{ t("food-list.head.title") }}</title>
   <link rel="stylesheet" href="/static/styles.css">
   <script src="/static/delete-check.js"></script>
 </head>
 
 <body>
   <header class="header">
-    <a href="/" class="btn btn-back">← Back</a>
-    <div class="app-title">Food List</div>
+    <a href="/" class="btn btn-back">← {{ t("food-list.header.back") }}</a>
+    <div class="app-title">{{ t("food-list.header.title") }}</div>
   </header>
 
   <main class="container">
     <div class="card">
-      <h2 id="history-title">Foods</h2>
+      <h2 id="history-title">{{ t("food-list.body.heading") }}</h2>
 
       {% if foods %}
       <div class="table-wrapper">
         <table class="food-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Kcal</th>
-              <th>Protein</th>
-              <th>Carbs</th>
-              <th>Fats  </th>
-              <th>Delete</th>
+              <th>{{ t("food-list.table.id") }}</th>
+              <th>{{ t("food-list.table.name") }}</th>
+              <th>{{ t("food-list.table.kcal") }}</th>
+              <th>{{ t("food-list.table.protein") }}</th>
+              <th>{{ t("food-list.table.carbs") }}</th>
+              <th>{{ t("food-list.table.fats") }}</th>
+              <th>{{ t("food-list.table.delete") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +44,10 @@
               <td>{{ food.carbs }}</td>
               <td>{{ food.fats }}</td>
               <td>
-                <a class="btn btn-delete" href="/food/delete/{{ food.id }}" data-name="{{ food.name }}">Delete</a>
+                <form method="post" action="/actions/delete-food">
+                  <input type="hidden" name="food_id" value="{{ food.id }}">
+                  <button class="btn, btn-delete" type="submit">{{ t("food-list.actions.delete") }}</button>
+                </form>
               </td>
             </tr>
             {% endif %}
@@ -53,7 +56,7 @@
         </table>
       </div>
       {% else %}
-      <p class="empty">No foods found</p>
+      <p class="empty">{{ t("food-list.body.no-foods") }}</p>
       {% endif %}
     </div>
   </main>

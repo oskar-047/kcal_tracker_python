@@ -6,8 +6,8 @@ from pathlib import Path
 from app_config import templates
 from db.database import get_db
 from db.helpers import get_user_from_db, create_default_user
-from i18n_conf.i18n_helper import detect_lan
-from i18n import I18n, make_t
+from i18n_conf.i18n_helper import detect_lan, make_t
+from i18n import I18n
 
 
 
@@ -23,11 +23,8 @@ def root(request: Request, conn = Depends(get_db)):
     # If there's no user row creates it with the browser language
     if not user:
         lan = detect_lan(request)
-        create_default_user(lan)
-    lan = user["lan"] if user else "en" # If user exists gets its lan if not, sets "en" as defalt lan
+        user = create_default_user(lan, True)
 
-    # Calls a function that returns a translate function with fixed lan which will be used on the template
-    t = make_t(i18n, lan) 
 
     print(user)
     print(detect_lan(request))
@@ -37,7 +34,7 @@ def root(request: Request, conn = Depends(get_db)):
         {
         "request": request,
         "today": {"kcal": 0, "protein": 0, "carbs": 0, "fats": 0},
-        "t": t,
+        "t": request.state.t,
         "user": user
         # "days": days
         }

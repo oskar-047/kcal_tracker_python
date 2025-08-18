@@ -7,7 +7,7 @@ def _get_conn():
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
-def create_default_user(lan):
+def create_default_user(lan: str, return_user: bool):
     with _get_conn() as conn:
         row = conn.execute("SELECT * FROM user_data LIMIT 1").fetchone()
         if not row:
@@ -15,6 +15,12 @@ def create_default_user(lan):
             '''
             INSERT INTO user_data (lan) VALUES(?)
             ''', (lan,))
+        conn.commit()
+
+        if return_user:
+            return conn.execute("SELECT * FROM user_data LIMIT 1").fetchone()
+
+        return None
 
 def get_user_from_db(conn, id):
 

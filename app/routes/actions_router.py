@@ -8,7 +8,7 @@ from db.database import get_db
 router = APIRouter()
 
 
-@router.post("/create-new-food", response_class=HTMLResponse)
+@router.post("/actions/create-food", response_class=HTMLResponse)
 def create_food(
     request: Request, 
     conn = Depends(get_db),
@@ -36,3 +36,15 @@ def create_food(
         }
     )
 
+# --- SOFT DELETE AN EXISTING FOOD
+@router.post("/actions/delete-food")
+def delete_food(
+    request: Request, 
+    food_id: str = Form(...), 
+    conn = Depends(get_db)):
+    
+    conn.execute("UPDATE user_food SET is_deleted = 1 WHERE id = ?", (food_id,))
+
+    conn.commit()
+
+    return RedirectResponse(url="/food/list", status_code=303)

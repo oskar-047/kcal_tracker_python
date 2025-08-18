@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>MacroTrack — Daily Recap</title>
+  <title>{{ t("index.head.title") }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- global stylesheet to add later -->
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body class="page">
@@ -16,8 +15,8 @@
   <main class="container">
     <!-- Today recap -->
     <section class="card" aria-labelledby="today-title">
-      <h2 id="today-title">Today</h2>
-      <div class="kcal-big" aria-label="Calories today">
+      <h2 id="today-title">{{ t("index.today.title") }}</h2>
+      <div class="kcal-big" aria-label="{{ t('index.today.kcal-aria') }}">
         {{ today.kcal or 0 }} kcal
       </div>
 
@@ -37,32 +36,32 @@
       </div>
 
       <div class="actions">
-        <a class="btn btn-primary" href="/meals/track">Track Food</a>
-        <a class="btn btn-primary" href="/food/new">Add Food</a>
-        <a class="btn btn-primary" href="/food/list">List Foods</a>
+        <a class="btn btn-primary" href="/meals/track">{{ t("index.actions.track") }}</a>
+        <a class="btn btn-primary" href="/food/new">{{ t("index.actions.add-food") }}</a>
+        <a class="btn btn-primary" href="/food/list">{{ t("index.actions.list-foods") }}</a>
       </div>
     </section>
 
     <!-- History list -->
     <section class="history" aria-labelledby="history-title">
-      <h2 id="history-title">History</h2>
+      <h2 id="history-title">{{ t("index.history.title") }}</h2>
 
       {% if days and days|length > 0 %}
         <ul class="day-list">
           {% for d in days %}
           <li class="day-item">
             <div class="day-date">{{ d.date }}</div>
-            <div class="day-kcal">kcal: {{ d.kcal }}</div>
+            <div class="day-kcal">{{ t("index.history.kcal-label") }} {{ d.kcal }}</div>
             <div class="day-macros">
-              <div>protein: {{ d.protein }} g</div>
-              <div>fats: {{ d.fats }} g</div>
-              <div>carbs: {{ d.carbs }} g</div>
+              <div>{{ t("index.history.protein-label") }} {{ d.protein }} g</div>
+              <div>{{ t("index.history.fats-label") }} {{ d.fats }} g</div>
+              <div>{{ t("index.history.carbs-label") }} {{ d.carbs }} g</div>
             </div>
           </li>
           {% endfor %}
         </ul>
       {% else %}
-        <p class="empty">No entries yet.</p>
+        <p class="empty">{{ t("index.history.empty") }}</p>
       {% endif %}
     </section>
   </main>
