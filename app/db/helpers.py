@@ -32,3 +32,32 @@ def get_user_from_db(conn, id):
     ).fetchone()
     
     return dict(row) if row else None
+
+def fetch_last_inserted_row(conn, table: str, id: int, model_cls):
+    row = conn.execute(
+        f'''
+        SELECT * FROM {table}
+        WHERE id=?
+        ''',
+        (id,)
+    ).fetchone()
+
+    if not row:
+        raise RuntimeError(f"Inserted {table} row not found")
+
+    return model_cls(**dict(row))
+
+
+def get_row_by_id(conn, table: str, id: int, model_cls):
+    row = conn.execute(
+        f'''
+        SELECT * FROM {table}
+        WHERE id=?
+        ''',
+        (id,)
+    ).fetchone()
+
+    if not row:
+        raise RuntimeError(f"{table} row with id {id} not found")
+
+    return model_cls(**dict(row))

@@ -13,7 +13,7 @@ def init_db(conn):
         name            TEXT,
         height          INTEGER,
         birthdate       INTEGER,
-        is_men          BOOLEAN,
+        is_male          BOOLEAN,
         activity_level  REAL    DEFAULT (1.25),
         protein_percent REAL    DEFAULT (0.25),
         carbs_percent   REAL    DEFAULT (0.55),
@@ -54,7 +54,7 @@ def init_db(conn):
 
     cursor.execute(
         '''
-        CREATE TABLE IF NOT EXISTS meal(
+        CREATE TABLE IF NOT EXISTS meals(
         id              INTEGER PRIMARY KEY AUTOINCREMENT,
         food_id         INTEGER NOT NULL,
         quantity        INTEGER NOT NULL,
