@@ -1,12 +1,12 @@
 import sqlite3
-from db.helpers import fetch_last_inserted_row, get_row_by_id
-from domain.food import UserData
+from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
+from domain.user import UserData
 
 class SQLiteUserRepo():
     def __init__(self, conn):
         self.conn = conn
 
-    def get_user(self, user_id: int) -> UserData | None:
+    def get_user(self, user_id: int) -> UserData:
         user_data = self.conn.execute(
             '''
             SELECT * FROM user_data
@@ -38,10 +38,14 @@ class SQLiteUserRepo():
         last_id = cursor.lastrowid
         return fetch_last_inserted_row(self.conn, "user_data", last_id, UserData)
 
+    def create_user_minimal(self, lan: str) -> UserData:
+        cur = self.conn.execute(
+            "INSERT INTO user_data(lan) VALUES (?)", (lan,)
+        )
+        return get_row_by_id(self.conn, "user_data", 1, UserData)
 
 
-
-    def edit_user(self, data: UserData) -> UserData | None:
+    def edit_user(self, data: UserData) -> UserData:
         self.conn.execute(
             '''
             UPDATE user_data
@@ -54,6 +58,17 @@ class SQLiteUserRepo():
             data.fats_percent, data.objective, data.lan, data.id)
         )
 
-        self.conn.commit()
-
         return get_row_by_id(self.conn, "user_data", data.id, UserData)
+
+
+    def get_user_lan(self, user_id: int) -> str | None:
+        lan = self.conn.execute(
+            '''
+            SELECT lan 
+            FROM user_data
+            WHERE id=?
+            ''',
+            (user_id,)
+        ).fetchone()
+
+        return lan if lan else None

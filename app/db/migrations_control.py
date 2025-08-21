@@ -58,5 +58,5 @@ def is_fresh_db(conn) -> bool:
 
 
 # The reason to use the same conn in all migration functions and on init_db 
-# its because in case something fails, the system can do a roll back all 
+# its because in case something fails, the system can roll back all 
 # the changes, if every function have its own conn and something fails, this can leave unfinished migrations.

@@ -1,20 +1,14 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from routes import main_router, meal_router, food_router, i18n_router
-from app_config import templates
 from db.migrations_control import run_migrations
 from pathlib import Path
-from i18n import I18n
-import sqlite3
-from db.database import DB_PATH
-from i18n_conf.i18n_helper import get_user_lan, make_t
+from db.session import db_conn
+from services import i18n_service
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-i18n = I18n(Path("i18n_conf"))
 
 app.include_router(main_router.router)
 app.include_router(meal_router.router)
@@ -26,15 +20,16 @@ def start_app():
     run_migrations()
 
 
-    
+# ======= MIDDLEWARE ======= 
 @app.middleware("http")
 async def middleware(request: Request, call_next):
-    lan = get_user_lan(1)
-        
-    t = make_t(i18n, lan)
+    with db_conn() as conn:
 
-    request.state.t = t
+        repo = SQLiteUserRepo(conn)
 
-    response = await call_next(request)
-    return response
+        t = i18n_service.get_t(repo)
+        request.state.t = t
+
+        response = await call_next(request)
+        return response
 

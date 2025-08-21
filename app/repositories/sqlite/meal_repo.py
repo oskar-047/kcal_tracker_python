@@ -1,5 +1,5 @@
 import sqlite3
-from db.helpers import fetch_last_inserted_row, get_row_by_id
+from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
 from domain.food import Meal
 
 class SQLiteMealRepo:

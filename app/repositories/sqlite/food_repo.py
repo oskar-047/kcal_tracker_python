@@ -1,5 +1,5 @@
 import sqlite3
-from db.helpers import fetch_last_inserted_row, get_row_by_id
+from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
 from domain.food import Food
 
 class SQLiteFoodRepo:
@@ -65,7 +65,5 @@ class SQLiteFoodRepo:
             ''',
             (food.name, food.kcal, food.protein, food.carbs, food.fats, food.id,)
         )
-
-        self.conn.commit()
 
         return get_row_by_id(self.conn, "user_food", food.id, Food)

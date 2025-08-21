@@ -13,7 +13,7 @@ def init_db(conn):
         name            TEXT,
         height          INTEGER,
         birthdate       INTEGER,
-        is_male          BOOLEAN,
+        is_male         BOOLEAN,
         activity_level  REAL    DEFAULT (1.25),
         protein_percent REAL    DEFAULT (0.25),
         carbs_percent   REAL    DEFAULT (0.55),
