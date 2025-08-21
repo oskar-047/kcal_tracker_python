@@ -1,0 +1,72 @@
+<!-- templates/meals-search.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ t("add-meal.head.title") }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="page">
+  <header class="header">
+    <a href="/" class="btn btn-back">{{ t("add-meal.header.back") }}</a>
+    <h1 class="app-title">{{ t("add-meal.header.title") }}</h1>
+  </header>
+
+  <main class="container">
+    <!-- Search -->
+    <section class="card" aria-labelledby="search-title">
+      <h2 id="search-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.search.title") }}</h2>
+      <form style="display: flex; flex-direction: row;" action="/meals/track/search" method="GET" role="search" autocomplete="off">
+        <input
+          id="search-query"
+          name="query"
+          type="text"
+          placeholder="{{ t('add-meal.search.placeholder') }}"
+          value="{{ query or '' }}"
+          required
+          autofocus
+          enterkeyhint="search">
+        
+        <button style="margin-left: 10px;" type="submit" aria-label="{{ t('add-meal.search.button') }}">{{ t("add-meal.search.button") }}</button>
+      </form>
+    </section>
+
+    <!-- Results -->
+    <section class="card" aria-labelledby="results-title">
+      <h2 id="results-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.results.title") }}</h2>
+
+      {% if foods and foods|length > 0 %}
+      <div class="table-wrapper">
+        <table class="food-table" aria-describedby="results-title">
+          <thead>
+            <tr>
+              <th>{{ t("add-meal.table.name") }}</th>
+              <th>{{ t("add-meal.table.kcal") }}</th>
+              <th>{{ t("add-meal.table.protein") }}</th>
+              <th>{{ t("add-meal.table.carbs") }}</th>
+              <th>{{ t("add-meal.table.fats") }}</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for food in foods %}
+            <tr>
+              <td>{{ food.name }}</td>
+              <td>{{ food.kcal }}</td>
+              <td>{{ food.protein }}</td>
+              <td>{{ food.carbs }}</td>
+              <td>{{ food.fats }}</td>
+              <td>{{ scores[loop.index0] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="empty">{{ t("add-meal.results.empty") }}</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

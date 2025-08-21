@@ -1,0 +1,16 @@
+__pycache__/
+*.db
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite*
+.env
+.env.*
+.DS_Store
+~$*
+.~lock*
+*.log
+*.ods
+*.odt
+

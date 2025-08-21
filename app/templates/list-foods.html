@@ -35,7 +35,6 @@
           </thead>
           <tbody>
             {% for food in foods %}
-            {% if food.is_deleted == 0 %}
             <tr>
               <td>{{ food.id }}</td>
               <td>{{ food.name }}</td>
@@ -44,13 +43,12 @@
               <td>{{ food.carbs }}</td>
               <td>{{ food.fats }}</td>
               <td>
-                <form method="post" action="/actions/delete-food">
+                <form method="post" action="/food/delete-food">
                   <input type="hidden" name="food_id" value="{{ food.id }}">
                   <button class="btn, btn-delete" type="submit">{{ t("food-list.actions.delete") }}</button>
                 </form>
               </td>
             </tr>
-            {% endif %}
             {% endfor %}
           </tbody>
         </table>

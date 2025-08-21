@@ -1,6 +1,6 @@
 import sqlite3
 from db.helpers import fetch_last_inserted_row, get_row_by_id
-from app.domain.food import UserData
+from domain.food import UserData
 
 class SQLiteUserRepo():
     def __init__(self, conn):

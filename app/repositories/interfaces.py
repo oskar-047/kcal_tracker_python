@@ -1,7 +1,7 @@
 from typing import Protocol
-from app.domain.food import Food
-from app.domain.meal import Meal
-from app.domain.user import UserData, UserWeight
+from domain.food import Food
+from domain.meal import Meal
+from domain.user import UserData, UserWeight
 
 class FoodRepo(Protocol):
     def list_foods(self) -> list[Food]: ...

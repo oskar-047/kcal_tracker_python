@@ -46,5 +46,20 @@
   "food-create.alert.protein": "protein",
   "food-create.alert.carbs": "carbs",
   "food-create.alert.fats": "fats",
-  "food-create.alert.suffix": "was successfully tracked"
+  "food-create.alert.suffix": "was successfully tracked",
+
+  "add-meal.head.title": "Add Meal – MacroTrack",
+  "add-meal.header.back": "Back",
+  "add-meal.header.title": "Add Meal",
+  "add-meal.search.title": "Search",
+  "add-meal.search.placeholder": "Type a food name",
+  "add-meal.search.button": "Search",
+  "add-meal.results.title": "Results",
+  "add-meal.results.empty": "No matches found.",
+  "add-meal.table.name": "Name",
+  "add-meal.table.kcal": "Kcal",
+  "add-meal.table.protein": "Protein",
+  "add-meal.table.carbs": "Carbs",
+  "add-meal.table.fats": "Fats",
+  "add-meal.table.score": "Score"
 }
