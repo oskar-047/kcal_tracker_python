@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from routes import main_router, meal_router, food_router, i18n_router
 from db.migrations_control import run_migrations
 from pathlib import Path
+from repositories.sqlite.user_repo import SQLiteUserRepo
 from db.session import db_conn
 from services import i18n_service
 

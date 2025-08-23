@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ t("food-list.head.title") }}</title>
-  <link rel="stylesheet" href="/static/styles.css">
-  <script src="/static/delete-check.js"></script>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <script src="/static/js/delete-check.js"></script>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
               <td>
                 <form method="post" action="/food/delete-food">
                   <input type="hidden" name="food_id" value="{{ food.id }}">
-                  <button class="btn, btn-delete" type="submit">{{ t("food-list.actions.delete") }}</button>
+                  <button data-name="{{ food.name }}" class="btn, btn-delete" type="submit">{{ t("food-list.actions.delete") }}</button>
                 </form>
               </td>
             </tr>
@@ -58,6 +58,9 @@
       {% endif %}
     </div>
   </main>
+
+  <script src="/static/js/i18n.js"></script>
+
 </body>
 
 </html>

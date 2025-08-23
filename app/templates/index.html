@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>{{ t("index.head.title") }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
 </head>
+
 <body class="page">
   <header class="header">
-    <a href="/change-lan/{{ user['id'] }}" class="btn btn-back">{{ t("index.header.change-lan") }}</a>
+    <a href="/change-lan/{{ user['id'] }}" class="btn btn-back btn-lan">{{ t("index.header.change-lan") }}</a>
     <h1 class="app-title">{{ t("index.header.title") }}</h1>
   </header>
 
@@ -46,24 +48,50 @@
     <section class="history" aria-labelledby="history-title">
       <h2 id="history-title">{{ t("index.history.title") }}</h2>
 
-      {% if days and days|length > 0 %}
-        <ul class="day-list">
-          {% for d in days %}
-          <li class="day-item">
-            <div class="day-date">{{ d.date }}</div>
-            <div class="day-kcal">{{ t("index.history.kcal-label") }} {{ d.kcal }}</div>
-            <div class="day-macros">
-              <div>{{ t("index.history.protein-label") }} {{ d.protein }} g</div>
-              <div>{{ t("index.history.fats-label") }} {{ d.fats }} g</div>
-              <div>{{ t("index.history.carbs-label") }} {{ d.carbs }} g</div>
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
+      <!-- DAY SELECTOR -->
+      <div class="card">
+        <form action="/" method="get" class="form">
+
+          <label for="datetime">{{ t("add-meal.popup.datetime") }}</label>
+          <input type="date" value="{{ date }}" id="datetime" name="dt" required>
+
+          <button style="margin-top: 20px; width: 100%;" type="submit" class="btn btn-primary">
+            {{ t("index.actions.change-day") }}
+          </button>
+        </form>
+      </div>
+
+      <!-- MEALS LIST -->
+      {% if meals and meals|length > 0 %}
+      <ul class="day-list">
+        {% for meal in meals %}
+        <li class="day-item">
+
+          <form class="delete-form" action="/meals/delete" method="post">
+            <input type="hidden" name="meal_id" value="{{ meal.id }}">
+            <button class="bin-btn" aria-label="Delete meal" title="Delete">
+              <img class="bin-img" src="/static/img/bin.png" alt="">
+            </button>
+          </form>
+
+          <div class="day-name">{{ meal.name }} ({{ meal.quantity }} g)</div>
+          <!-- <div class="day-date">{{ meal.tracked_date }}</div> -->
+          <div class="day-kcal">{{ t("index.history.kcal-label") }} {{ meal.kcal }}</div>
+          <div class="day-macros">
+            <div>{{ t("index.history.protein-label") }} {{ meal.protein }} g</div>
+            <div>{{ t("index.history.fats-label") }} {{ meal.fats }} g</div>
+            <div>{{ t("index.history.carbs-label") }} {{ meal.carbs }} g</div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
       {% else %}
-        <p class="empty">{{ t("index.history.empty") }}</p>
+      <p class="empty">{{ t("index.history.empty") }}</p>
       {% endif %}
+
     </section>
   </main>
+
 </body>
+
 </html>

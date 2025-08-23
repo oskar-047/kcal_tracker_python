@@ -5,4 +5,4 @@ class Meal(BaseModel):
         food_id: int
         quantity: int
         tracked_date: int
-        meal_type: int
+        meal_type: int | None = None

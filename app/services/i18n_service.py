@@ -9,4 +9,15 @@ def get_t(user_repo: UserRepo):
 
     user_lan = user_repo.get_user_lan(1)
 
-    return make_t(i18n, lan)
+    return make_t(i18n, user_lan)
+
+def change_lan(user_repo: UserRepo):
+    current_lan = user_repo.get_user_lan(1)
+
+    if current_lan:
+
+        new_lan = "es" if current_lan == "en" else "en"
+
+        return user_repo.change_user_lan(1, new_lan)
+
+    return None

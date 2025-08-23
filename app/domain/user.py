@@ -6,7 +6,7 @@ class UserData(BaseModel):
         height: int | None = None
         birthdate: int | None = None
         is_male: bool | None = None
-        activity_level: int | None = None
+        activity_level: float | None = None
         protein_percent: float | None = None
         carbs_percent: float | None = None
         fats_percent: float | None = None

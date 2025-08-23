@@ -1,0 +1,18 @@
+#track-meal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* background-color: black; */
+    width: 400px;
+    height: 50%;
+    z-index: 100;
+}
+
+
+
+@media (max-width: 480px) {
+    #track-meal-dialog{
+        width: 80%;
+    }
+}

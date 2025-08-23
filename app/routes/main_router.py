@@ -1,35 +1,48 @@
-from fastapi import FastAPI, Request, APIRouter, Depends
+from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime, date
 from pathlib import Path
 from app_config import templates
 from domain.user import UserData
 from db.database import get_db
-from services import user_service
+from services import user_service, meals_service
 from repositories.sqlite.user_repo import SQLiteUserRepo
+from repositories.sqlite.meal_repo import SQLiteMealRepo
+from repositories.sqlite.food_repo import SQLiteFoodRepo
 from i18n_conf.i18n_helper import detect_lan
 
 
 router = APIRouter()
 
+# ======= MAIN ROUTER =======
 @router.get("/", response_class=HTMLResponse)
-def root(request: Request, conn = Depends(get_db)):
+def root(
+    request: Request, 
+    dt: date | None = Query(None),
+    conn = Depends(get_db)):
 
-    repo = SQLiteUserRepo(conn)
-    lan = detect_lan(request)
-    
-    user = user_service.create_default_user(repo, lan)
+    user_repo = SQLiteUserRepo(conn)
+    meal_repo = SQLiteMealRepo(conn)
+    food_repo = SQLiteFoodRepo(conn)
 
-    print(user)
+    user = user_service.create_default_user(user_repo, detect_lan(request))
+    meals = meals_service.list_meals(meal_repo, food_repo, dt)    
+    today_macros = meals_service.calculate_total_macros(meals)
+    delete_meal_status = request.query_params.get("delete_status")
+    selected_date = dt or date.today()
 
     return templates.TemplateResponse(
         "index.html",
         {
         "request": request,
-        "today": {"kcal": 0, "protein": 0, "carbs": 0, "fats": 0},
         "t": request.state.t,
-        "user": user
+        "date": selected_date,
+        "user": user,
+        "meals": meals,
+        "today": today_macros,
+        "delete_meal_status": delete_meal_status
         # "days": days
         }
     )

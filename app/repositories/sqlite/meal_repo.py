@@ -1,6 +1,6 @@
 import sqlite3
 from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
-from domain.food import Meal
+from domain.meal import Meal
 
 class SQLiteMealRepo:
     def __init__(self, conn):
@@ -15,7 +15,6 @@ class SQLiteMealRepo:
             ''',
             (start, end)
             ).fetchall()
-
 
         return [Meal(**dict(row)) for row in rows]
 

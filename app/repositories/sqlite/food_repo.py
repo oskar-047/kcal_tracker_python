@@ -67,3 +67,15 @@ class SQLiteFoodRepo:
         )
 
         return get_row_by_id(self.conn, "user_food", food.id, Food)
+
+    def get_food_by_id(self, food_id) -> Food | None:
+        row = self.conn.execute(
+            '''
+            SELECT name, kcal, protein, carbs, fats, id 
+            FROM user_food
+            WHERE id=?
+            ''',
+            (food_id,)
+        ).fetchone()
+
+        return Food(**dict(row)) if row else None

@@ -1,12 +1,15 @@
 <!-- templates/meals-search.html -->
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>{{ t("add-meal.head.title") }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles-track-dialog.css">
 </head>
+
 <body class="page">
   <header class="header">
     <a href="/" class="btn btn-back">{{ t("add-meal.header.back") }}</a>
@@ -17,18 +20,13 @@
     <!-- Search -->
     <section class="card" aria-labelledby="search-title">
       <h2 id="search-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.search.title") }}</h2>
-      <form style="display: flex; flex-direction: row;" action="/meals/track/search" method="GET" role="search" autocomplete="off">
-        <input
-          id="search-query"
-          name="query"
-          type="text"
-          placeholder="{{ t('add-meal.search.placeholder') }}"
-          value="{{ query or '' }}"
-          required
-          autofocus
-          enterkeyhint="search">
-        
-        <button style="margin-left: 10px;" type="submit" aria-label="{{ t('add-meal.search.button') }}">{{ t("add-meal.search.button") }}</button>
+      <form style="display: flex; flex-direction: row;" action="/meals/track/search" method="GET" role="search"
+        autocomplete="off">
+        <input id="search-query" name="query" type="text" placeholder="{{ t('add-meal.search.placeholder') }}"
+          value="{{ query or '' }}" required autofocus enterkeyhint="search">
+
+        <button style="margin-left: 10px;" type="submit" aria-label="{{ t('add-meal.search.button') }}">{{
+          t("add-meal.search.button") }}</button>
       </form>
     </section>
 
@@ -47,6 +45,7 @@
               <th>{{ t("add-meal.table.carbs") }}</th>
               <th>{{ t("add-meal.table.fats") }}</th>
               <th>Score</th>
+              <th>{{ t("add-meal.table.track") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +57,9 @@
               <td>{{ food.carbs }}</td>
               <td>{{ food.fats }}</td>
               <td>{{ scores[loop.index0] }}</td>
+              <td>
+                <button data-food-id="{{ food.id }}" class="btn btn-track">{{ t("add-meal.action.track") }}</button>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -68,5 +70,36 @@
       {% endif %}
     </section>
   </main>
+
+  <div style="display: none;" class="card" id="track-meal-dialog">
+    <form action="/meals/track/track-meal" method="post" class="form">
+
+
+      <input style="display: none;" type="text" value="{{ query }}" name="query">
+      <input style="display: none;" type="text" id="food_id" name="food_id">
+
+      <label for="quantity">{{ t("add-meal.popup.quantity") }}</label>
+      <input placeholder="Write quantity" type="number" id="quantity" name="quantity" min="1" required>
+
+      <label for="datetime">{{ t("add-meal.popup.datetime") }}</label>
+      <input type="datetime-local" id="datetime" name="dt" required>
+
+      <button style="margin-top: 20px; width: 100%;" type="submit" class="btn btn-primary">
+        {{ t("add-meal.action.track") }}
+      </button>
+    </form>
+  </div>
+
+
+  <script src="/static/js/show-track-dialog.js"></script>
+  <script src="/static/js/set-default-datetime.js"></script>
+
+  {% if track %}
+  <script>
+    alert("{{ track }}");
+  </script>
+  {% endif %}
+
 </body>
+
 </html>

@@ -161,6 +161,7 @@ form button:active {
 }
 
 /* ========== Day History ========== */
+/* ========== Day History (grid layout) ========== */
 .history {
   margin-top: 18px;
 }
@@ -171,32 +172,70 @@ form button:active {
 .day-item {
   display: grid;
   grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "name bin"
+    "kcal bin"
+    "macros macros";
   gap: 6px 12px;
-  align-items: center;
+  align-items: start;
   background: var(--bg-elev);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px 12px;
 }
-.day-date {
-  font-weight: 650;
-}
-.day-kcal {
-  color: var(--text);
-}
-.day-macros {
-  grid-column: 1 / -1;
+
+/* elements inside the card */
+.day-name  { grid-area: name; font-weight: 650; }
+.day-kcal  { grid-area: kcal; color: var(--text); }
+.day-macros{
+  grid-area: macros;
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
   color: var(--muted);
   font-size: 13px;
 }
+
+/* bin icon top-right, small */
+.bin-img {
+  grid-area: bin;
+  width: 32px;
+  height: 32px;
+  justify-self: end;
+  align-self: start;
+  opacity: 0.85;
+}
+
+.bin-btn {
+  all: unset;          /* reset all inherited styles */
+  cursor: pointer;
+  grid-area: bin;
+  justify-self: end;
+  align-self: start;
+}
+
+.bin-btn:focus-visible {
+  outline: 2px solid #fff2;
+  outline-offset: 2px;
+}
+
 .empty {
   color: var(--muted);
   text-align: center;
   padding: 16px;
 }
+
+/* responsive tweak */
+@media (max-width: 380px) {
+  .day-item {
+    grid-template-areas:
+      "name bin"
+      "kcal kcal"
+      "macros macros";
+  }
+  .bin-img { width: 20px; height: 20px; }
+}
+
 
 /* ========== Forms ========== */
 form label {
@@ -294,3 +333,5 @@ td a {
     scroll-behavior: auto !important;
   }
 }
+
+

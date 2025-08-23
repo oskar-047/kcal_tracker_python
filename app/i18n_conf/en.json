@@ -16,6 +16,7 @@
   "index.history.fats-label": "fats:",
   "index.history.carbs-label": "carbohydrates:",
   "index.history.empty": "No entries yet.",
+  "index.actions.change-day": "Change day",
 
   "food-list.head.title": "Food List – MacroTrack",
   "food-list.header.back": "Back",
@@ -61,5 +62,8 @@
   "add-meal.table.protein": "Protein",
   "add-meal.table.carbs": "Carbs",
   "add-meal.table.fats": "Fats",
-  "add-meal.table.score": "Score"
+  "add-meal.table.score": "Score",
+  "add-meal.action.track": "Track",
+  "add-meal.popup.quantity": "Quantity",
+  "add-meal.popup.datetime": "Datetime"
 }

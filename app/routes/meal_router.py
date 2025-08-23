@@ -6,7 +6,10 @@ from app_config import templates
 from db.database import get_db
 from domain.food import Food
 from repositories.sqlite.food_repo import SQLiteFoodRepo
-from services import food_service
+from services import food_service,meals_service
+from domain.meal import Meal
+from repositories.sqlite.meal_repo import SQLiteMealRepo
+from datetime import datetime
 
 router = APIRouter()
 
@@ -42,3 +45,40 @@ def food_fuzzy_search(
             "t": request.state.t
         }
     )
+
+
+# ======= MEAL TRACK =======
+@router.post("/meals/track/track-meal", response_class=HTMLResponse)
+def track_meal(
+    request: Request,
+    query: str = Form(None),
+    food_id: str = Form(...),
+    quantity: int = Form(...),
+    dt: datetime = Form(...),
+    conn = Depends(get_db)):
+
+    repo = SQLiteMealRepo(conn)
+    track = meals_service.track_meal(repo, food_id, quantity, dt)
+
+    return templates.TemplateResponse(
+        "add-meal.html",
+        {
+            "request": request,
+            "query": query,
+            "track": track,
+            "t": request.state.t
+        }
+    )
+
+# ======= MEAL DELETE =======
+@router.post("/meals/delete", response_class=HTMLResponse)
+def delete_meal(
+    request: Request, 
+    meal_id: str = Form(...),
+    conn = Depends(get_db)):
+
+    repo = SQLiteMealRepo(conn)
+
+    status = meals_service.delete_meal(repo, meal_id)
+
+    return RedirectResponse(url=f"/?delete_status={status}", status_code=303)

@@ -69,6 +69,19 @@ class SQLiteUserRepo():
             WHERE id=?
             ''',
             (user_id,)
-        ).fetchone()
+        ).fetchone()[0]
 
         return lan if lan else None
+
+    def change_user_lan(self, user_id, lan) -> bool:
+        cursor = self.conn.execute(
+            '''
+            UPDATE user_data 
+            SET lan=?
+            WHERE id=?
+            ''',
+            (lan, user_id))
+
+        return True if cursor.rowcount > 0 else False
+
+

@@ -36,7 +36,7 @@ def get_scorer(query: str):
     if lenght < 5:
         return fuzz.WRatio, 70
 
-    return fuzz.WRatio, 50
+    return fuzz.WRatio, 60
 
 
 def normalize(text: str) -> str:
