@@ -71,6 +71,7 @@
     </section>
   </main>
 
+  <div style="display: none;" id="invisible-bg" onclick="occultTrackDialog()"></div>
   <div style="display: none;" class="card" id="track-meal-dialog">
     <form action="/meals/track/track-meal" method="post" class="form">
 
@@ -82,7 +83,7 @@
       <input placeholder="Write quantity" type="number" id="quantity" name="quantity" min="1" required>
 
       <label for="datetime">{{ t("add-meal.popup.datetime") }}</label>
-      <input type="datetime-local" id="datetime" name="dt" required>
+      <input type="datetime-local" value="{{ date }}" id="datetime" name="dt" required>
 
       <button style="margin-top: 20px; width: 100%;" type="submit" class="btn btn-primary">
         {{ t("add-meal.action.track") }}
@@ -91,8 +92,7 @@
   </div>
 
 
-  <script src="/static/js/show-track-dialog.js"></script>
-  <script src="/static/js/set-default-datetime.js"></script>
+  <script src="/static/js/track-dialog.js"></script>
 
   {% if track %}
   <script>

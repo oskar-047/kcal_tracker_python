@@ -1,14 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".btn-delete").forEach(btn => {
-        btn.addEventListener("click", e => {
-            foodName = btn.dataset.name;
-            confirmation = confirm(`Are you sure you want to delete the food ${foodName}?`)
+function checkDelete(e, item, toDelete) {
+    itemName = item.dataset.name;
+    confirmation = confirm(`Are you sure you want to delete the ${toDelete} ${itemName}?`)
 
-            if(confirmation){
-                console.log("fine");
-            } else{
-                e.preventDefault();
-            }
-        })
-    })
-})
+    if (confirmation) {
+        console.log("fine");
+    } else {
+        e.preventDefault();
+    }
+}

@@ -1,6 +1,6 @@
 import sqlite3
 from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
-from domain.user import UserData
+from domain.user import UserData, UserWeight
 
 class SQLiteUserRepo():
     def __init__(self, conn):
@@ -16,7 +16,7 @@ class SQLiteUserRepo():
         ).fetchone()
 
         if not user_data:
-            raise RuntimeError("User not found")
+            return None
 
         return UserData(**dict(user_data))
 
@@ -26,11 +26,11 @@ class SQLiteUserRepo():
         cursor = self.conn.execute(
             '''
             INSERT INTO user_data (
-            name, height, birthdate, is_male, activity_level,
+            name, height, is_male, kcal_target, activity_level, 
             protein_percent, carbs_percent, fats_percent, objective, lan
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''',
-            (data.name, data.height, data.birthdate, data.is_male,
+            (data.name, data.height, data.is_male, data.kcal_target,
             data.activity_level, data.protein_percent, data.carbs_percent,
             data.fats_percent, data.objective, data.lan)
         )
@@ -47,18 +47,29 @@ class SQLiteUserRepo():
 
     def edit_user(self, data: UserData) -> UserData:
         self.conn.execute(
-            '''
+            """
             UPDATE user_data
-            SET name=?, height=?, birthdate=?, is_male=?, activity_level=?,
-            protein_percent=?, carbs_percent=?, fats_percent=?, objective=?, lan=?
+            SET
+            name=COALESCE(?, name),
+            age=COALESCE(?, age),
+            height=COALESCE(?, height),
+            is_male=COALESCE(?, is_male),
+            kcal_target=COALESCE(?, kcal_target),
+            activity_level=COALESCE(?, activity_level),
+            protein_percent=COALESCE(?, protein_percent),
+            carbs_percent=COALESCE(?, carbs_percent),
+            fats_percent=COALESCE(?, fats_percent),
+            objective=COALESCE(?, objective),
+            lan=COALESCE(?, lan)
             WHERE id=?
-            ''',
-            (data.name, data.height, data.birthdate, data.is_male,
+            """,
+            (data.name, data.age, data.height, data.is_male, data.kcal_target,
             data.activity_level, data.protein_percent, data.carbs_percent,
-            data.fats_percent, data.objective, data.lan, data.id)
+            data.fats_percent, data.objective, data.lan, data.id),
         )
-
+        self.conn.commit()
         return get_row_by_id(self.conn, "user_data", data.id, UserData)
+
 
 
     def get_user_lan(self, user_id: int) -> str | None:
@@ -69,9 +80,9 @@ class SQLiteUserRepo():
             WHERE id=?
             ''',
             (user_id,)
-        ).fetchone()[0]
+        ).fetchone()
 
-        return lan if lan else None
+        return lan[0] if lan else "en"
 
     def change_user_lan(self, user_id, lan) -> bool:
         cursor = self.conn.execute(
@@ -84,4 +95,30 @@ class SQLiteUserRepo():
 
         return True if cursor.rowcount > 0 else False
 
+    def track_weight(self, user_id: int, weight: float) -> float:
+        cur = self.conn.execute(
+            "INSERT INTO user_weight(user_id, weight) VALUES(?, ?)",
+            (user_id, weight),
+        )
 
+        row_id = cur.lastrowid
+
+        return self.conn.execute(
+            "SELECT weight FROM user_weight WHERE id=?",
+            (row_id,),
+        ).fetchone()[0]
+
+    def get_all_tracked_weights(self, user_id) -> list[UserWeight] | None:
+        rows = self.conn.execute(
+            '''
+            SELECT user_id, weight, tracked_date 
+            FROM user_weight
+            WHERE user_id=?
+            ''',
+            (user_id,)
+        ).fetchall()
+
+        if not rows:
+            return None
+
+        return [UserWeight(**dict(row)) for row in rows]

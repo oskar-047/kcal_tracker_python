@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 from db.database import DB_PATH
 from db.models import init_db
-# from db.migrations import migration_1, migration_2
+#from db.migrations import migration_1
 
 
 # Current database version
@@ -10,7 +10,7 @@ LATEST_VERSION = 0
 
 # Dictionary with migration functions
 MIGRATIONS = {
-    # 1: migration_1,
+    #1: migration_1,
     # 2: migration_2
 }
 
@@ -41,7 +41,6 @@ def run_migrations():
                     conn.execute(f"PRAGMA user_version = {version}")
 
     finally:
-        conn.commit()
         conn.close()
 
 def is_fresh_db(conn) -> bool:

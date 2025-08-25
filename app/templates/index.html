@@ -17,6 +17,11 @@
   <main class="container">
     <!-- Today recap -->
     <section class="card" aria-labelledby="today-title">
+
+      <a href="/user/show-info" id="conf-wheel">
+        <img src="/static/img/settings-wheel.png">
+      </a>
+
       <h2 id="today-title">{{ t("index.today.title") }}</h2>
       <div class="kcal-big" aria-label="{{ t('index.today.kcal-aria') }}">
         {{ today.kcal or 0 }} kcal
@@ -50,14 +55,9 @@
 
       <!-- DAY SELECTOR -->
       <div class="card">
-        <form action="/" method="get" class="form">
-
+        <form  id="form-date-change" action="/" method="get" class="form">
           <label for="datetime">{{ t("add-meal.popup.datetime") }}</label>
           <input type="date" value="{{ date }}" id="datetime" name="dt" required>
-
-          <button style="margin-top: 20px; width: 100%;" type="submit" class="btn btn-primary">
-            {{ t("index.actions.change-day") }}
-          </button>
         </form>
       </div>
 
@@ -68,8 +68,11 @@
         <li class="day-item">
 
           <form class="delete-form" action="/meals/delete" method="post">
+
+            <input type="hidden" value="{{ date }}" id="meal-datetime" name="dt">
+
             <input type="hidden" name="meal_id" value="{{ meal.id }}">
-            <button class="bin-btn" aria-label="Delete meal" title="Delete">
+            <button type="submit" data-name="{{ meal.name }}" onclick="checkDelete(event, this, 'meal')" class="bin-btn" aria-label="Delete meal" title="Delete">
               <img class="bin-img" src="/static/img/bin.png" alt="">
             </button>
           </form>
@@ -91,6 +94,9 @@
 
     </section>
   </main>
+
+  <script src="/static/js/delete-check.js"></script>
+  <script src="/static/js/change-date.js"></script>
 
 </body>
 

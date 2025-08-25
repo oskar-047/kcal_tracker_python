@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ t("user-conf.head.title") }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body class="page">
+    <header class="header">
+        <a href="/" class="btn btn-back">{{ t("user-conf.header.back") }}</a>
+        <h1 class="app-title">{{ t("user-conf.header.title") }}</h1>
+    </header>
+
+    <main class="container">
+        <section class="card" aria-labelledby="userconf-title">
+            <h2 id="userconf-title">{{ t("user-conf.title") }}</h2>
+
+            <form action="/user/update-data" method="post" class="form" autocomplete="off">
+                <input type="hidden" value="{{ user.id }}" name="id">
+                <!-- Name -->
+                <label for="name">{{ t("user-conf.form.name") }}</label>
+                <input type="text" id="name" name="name" value="{{ user.name or '' }}"
+                    placeholder="{{ t('user-conf.form.name-ph') }}">
+
+                <!-- Sex -->
+                <label for="is_male">{{ t("user-conf.form.sex") }}</label>
+                <select id="is_male" name="is_male">
+                    <option value="1" {% if user.is_male %}selected{% endif %}>
+                        {{ t("user-conf.form.male") }}
+                    </option>
+                    <option value="0" {% if user.is_male is defined and not user.is_male %}selected{% endif %}>
+                        {{ t("user-conf.form.female") }}
+                    </option>
+                </select>
+
+
+                <!-- Age -->
+                <label for="age">{{ t("user-conf.form.age") }}</label>
+                <input type="number" id="age" name="age" min="1" max="120" step="1"
+                    value="{{ user.age if user.age is defined and user.age is not none else '' }}" placeholder="30">
+
+
+                <!-- Weight -->
+                <label for="weight">{{ t("user-conf.form.weight") }}</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <input type="number" id="weight" name="weight" min="20" max="500" step="0.1"
+                        value="{{ weight if weight is defined and weight is not none else '10' }}"
+                        placeholder="70">
+
+                    <a href="/user/weight-log" class="btn btn-small">
+                        {{ t("user-conf.form.view-weight-log") }}
+                    </a>
+                </div>
+
+                <!-- Height (cm) -->
+                <label for="height">{{ t("user-conf.form.height") }}</label>
+                <input type="number" id="height" name="height" min="50" max="260" step="1"
+                    value="{{ user.height if user.height is not none else '' }}" placeholder="175">
+
+                <!-- Activity level -->
+                <label for="activity_level">{{ t("user-conf.form.activity") }}</label>
+                <div class="form-row">
+                    <input class="grow" type="number" id="activity_level" name="activity_level" min="1" max="2.5"
+                        step="0.001" value="{{ user.activity_level if user.activity_level is not none else 1.2 }}"
+                        placeholder="1.55">
+                        
+                    <select id="activity_level_select" class="select-compact"
+                        aria-label="{{ t('user-conf.form.activity') }}">
+                        <option value="1.2">{{ t("user-conf.activity-level.sedentary") }}</option>
+                        <option value="1.375">{{ t("user-conf.activity-level.light") }}</option>
+                        <option value="1.55">{{ t("user-conf.activity-level.moderate") }}</option>
+                        <option value="1.725">{{ t("user-conf.activity-level.active") }}</option>
+                        <option value="1.9">{{ t("user-conf.activity-level.very-active") }}</option>
+                        <option value="2.3">{{ t("user-conf.activity-level.athlete") }}</option>
+                    </select>
+                </div>
+
+                <!-- Daily kcal target -->
+                <label for="kcal_target">{{ t("user-conf.form.kcal-target") }}</label>
+                <div class="form-row">
+                    <input type="number" id="kcal_target" name="kcal_target" min="800" max="6000" step="10"
+                        value="{{ user.kcal_target if user.kcal_target is defined and user.kcal_target is not none else '' }}"
+                        placeholder="2400">
+                    <button type="button" id="auto_kcal_btn" class="btn btn-small">
+                        {{ t("user-conf.form.auto-kcal") if t else "Auto" }}
+                    </button>
+                </div>
+
+
+
+                <!-- Macros distribution (%) -->
+                <label>{{ t("user-conf.form.macros-title") }}</label>
+                <input type="number" name="protein_percent" id="protein_percent" min="0" max="100" step="1"
+                    value="{{ user.protein_percent if user.protein_percent is not none else '' }}"
+                    placeholder="{{ t('user-conf.form.protein-ph') }}">
+                <input type="number" name="carbs_percent" id="carbs_percent" min="0" max="100" step="1"
+                    value="{{ user.carbs_percent if user.carbs_percent is not none else '' }}"
+                    placeholder="{{ t('user-conf.form.carbs-ph') }}">
+                <input type="number" name="fats_percent" id="fats_percent" min="0" max="100" step="1"
+                    value="{{ user.fats_percent if user.fats_percent is not none else '' }}"
+                    placeholder="{{ t('user-conf.form.fats-ph') }}">
+                <p class="empty">{{ t("user-conf.form.macros-hint") }}</p>
+
+
+                <!-- Objective (+/- kcal) -->
+                <label for="objective">{{ t("user-conf.form.objective") }}</label>
+                <input type="number" id="objective" name="objective" step="10"
+                    value="{{ user.objective if user.objective is not none else '' }}" placeholder="+200 / -500">
+
+                <!-- Submit -->
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">{{ t("user-conf.form.save") }}</button>
+                    <a href="/" class="btn">{{ t("user-conf.form.cancel") }}</a>
+                </div>
+
+                <!-- Hidden id -->
+                <input type="hidden" name="id" value="{{ user.id if user.id is not none else '' }}">
+            </form>
+        </section>
+    </main>
+
+
+    <script src="/static/js/activity-selector.js"></script>
+    <script src="/static/js/calculate-kcal-requirement.js"></script>
+
+</body>
+
+</html>

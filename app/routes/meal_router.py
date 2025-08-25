@@ -9,7 +9,7 @@ from repositories.sqlite.food_repo import SQLiteFoodRepo
 from services import food_service,meals_service
 from domain.meal import Meal
 from repositories.sqlite.meal_repo import SQLiteMealRepo
-from datetime import datetime
+from datetime import datetime, date
 
 router = APIRouter()
 
@@ -17,10 +17,14 @@ router = APIRouter()
 # --- SHOWS ADD TRACK HTML
 @router.get("/meals/track", response_class=HTMLResponse)
 def show_new_food_HTML(request: Request):
+    
+    dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
+    
     return templates.TemplateResponse(
         "add-meal.html",
         {
             "request": request,
+            "date": dt,
             "t": request.state.t
         }
     )
@@ -35,10 +39,13 @@ def food_fuzzy_search(
     repo = SQLiteFoodRepo(conn)
     foods, scores = food_service.fuzzy_search(repo, query, 10)
 
+    dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
+
     return templates.TemplateResponse(
         "add-meal.html",
         {
             "request": request,
+            "date": dt,
             "foods": foods,
             "scores": scores,
             "query": query,
@@ -75,10 +82,17 @@ def track_meal(
 def delete_meal(
     request: Request, 
     meal_id: str = Form(...),
+    dt: date|None = Form(None),
     conn = Depends(get_db)):
 
     repo = SQLiteMealRepo(conn)
 
     status = meals_service.delete_meal(repo, meal_id)
 
-    return RedirectResponse(url=f"/?delete_status={status}", status_code=303)
+    target = "/"
+    if dt:
+        target += f"?dt={dt.isoformat()}&delete_status={status}"
+    else:
+        target += f"?delete_status={status}"
+
+    return RedirectResponse(url=target, status_code=303)

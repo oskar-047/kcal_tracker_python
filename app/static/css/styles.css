@@ -63,6 +63,7 @@ body {
 
 /* ========== Cards ========== */
 .card {
+  position: relative;
   background: var(--bg-elev);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -334,4 +335,61 @@ td a {
   }
 }
 
+#conf-wheel{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 
+#conf-wheel img{
+  width: 32px;
+  height: 32px;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+
+/* inline input + select */
+.form-row { display:flex; gap:8px; align-items:center; }
+.select-compact { flex:0 0 120px; }   /* adjust width if you want */
+
+/* make <select> match inputs */
+form select {
+  /* width: 100%; */
+  min-width: 250px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  margin-top: 4px;
+  font-size: 14px;
+}
+form select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* stack on very small screens */
+@media (max-width: 380px) {
+   .form-row { 
+    flex-direction: column; 
+  } 
+
+  .form select{
+    max-height: 40px;
+  }
+
+}
+
+@media (max-width: 320px) {
+  #activity_level_select{
+    min-width:0;           /* override 250px */
+    flex:0 1 auto;         /* allow shrinking (undo 0 0 120px) */
+    width:100%;
+  }
+}

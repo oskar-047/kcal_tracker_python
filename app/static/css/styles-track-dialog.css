@@ -9,7 +9,16 @@
     z-index: 100;
 }
 
+#invisible-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000066;
+    z-index: 90;
 
+}
 
 @media (max-width: 480px) {
     #track-meal-dialog{

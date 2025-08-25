@@ -11,14 +11,15 @@ def init_db(conn):
         CREATE TABLE IF NOT EXISTS user_data(
         id              INTEGER PRIMARY KEY AUTOINCREMENT,
         name            TEXT,
+        age             INTEGER,
         height          INTEGER,
-        birthdate       INTEGER,
         is_male         BOOLEAN,
-        activity_level  REAL    DEFAULT (1.25),
-        protein_percent REAL    DEFAULT (0.25),
-        carbs_percent   REAL    DEFAULT (0.55),
-        fats_percent    REAL    DEFAULT (0.2),
-        objective       INTEGER DEFAULT (0),
+        kcal_target     INTEGER,
+        activity_level  REAL,
+        protein_percent REAL,
+        carbs_percent   REAL,
+        fats_percent    REAL,
+        objective       INTEGER,
         lan             TEXT    DEFAULT 'en'
         )
         '''
