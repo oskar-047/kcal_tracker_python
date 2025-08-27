@@ -15,12 +15,20 @@
 * {
   box-sizing: border-box;
 }
-html, body {
+
+html,
+body {
   height: 100%;
 }
-body, h1, h2, p, ul {
+
+body,
+h1,
+h2,
+p,
+ul {
   margin: 0;
 }
+
 ul {
   padding: 0;
   list-style: none;
@@ -35,6 +43,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
 .container {
   width: 100%;
   max-width: 860px;
@@ -54,6 +63,7 @@ body {
   align-items: center;
   padding: 10px 12px;
 }
+
 .app-title {
   flex: 1;
   text-align: center;
@@ -73,10 +83,12 @@ body {
 }
 
 /* ========== Typography ========== */
-#today-title, #history-title {
+#today-title,
+#history-title {
   font-size: clamp(18px, 2vw, 20px);
   margin-bottom: 8px;
 }
+
 .kcal-big {
   text-align: center;
   font-weight: 750;
@@ -92,6 +104,7 @@ body {
   gap: 8px;
   margin-top: 8px;
 }
+
 .macro {
   background: var(--card);
   border: 1px solid var(--border);
@@ -99,11 +112,13 @@ body {
   padding: 10px 8px;
   text-align: center;
 }
+
 .label {
   display: block;
   font-size: 12px;
   color: var(--muted);
 }
+
 .value {
   font-size: 16px;
   font-weight: 700;
@@ -159,6 +174,9 @@ form button:active {
   top: 6px;
   left: 10px;
   padding: 8px 20px;
+  font-size: clamp(0.85rem, 1vw, 1.2rem);
+  border-radius: clamp(4px, 1vw, 10px);
+  /* color: white; */
 }
 
 /* ========== Day History ========== */
@@ -166,10 +184,12 @@ form button:active {
 .history {
   margin-top: 18px;
 }
+
 .day-list {
   display: grid;
   gap: 10px;
 }
+
 .day-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -186,9 +206,17 @@ form button:active {
 }
 
 /* elements inside the card */
-.day-name  { grid-area: name; font-weight: 650; }
-.day-kcal  { grid-area: kcal; color: var(--text); }
-.day-macros{
+.day-name {
+  grid-area: name;
+  font-weight: 650;
+}
+
+.day-kcal {
+  grid-area: kcal;
+  color: var(--text);
+}
+
+.day-macros {
   grid-area: macros;
   display: flex;
   gap: 14px;
@@ -208,7 +236,8 @@ form button:active {
 }
 
 .bin-btn {
-  all: unset;          /* reset all inherited styles */
+  all: unset;
+  /* reset all inherited styles */
   cursor: pointer;
   grid-area: bin;
   justify-self: end;
@@ -234,7 +263,11 @@ form button:active {
       "kcal kcal"
       "macros macros";
   }
-  .bin-img { width: 20px; height: 20px; }
+
+  .bin-img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 
@@ -246,6 +279,7 @@ form label {
   font-weight: 600;
   color: var(--muted);
 }
+
 form input {
   width: 100%;
   padding: 8px 10px;
@@ -256,6 +290,7 @@ form input {
   margin-top: 4px;
   font-size: 14px;
 }
+
 form input:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
@@ -265,40 +300,57 @@ form input:focus {
 .table-wrapper {
   overflow-x: auto;
 }
+
 .food-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
+
 .food-table th,
 .food-table td {
   border: 1px solid var(--border);
   padding: 8px 10px;
   text-align: left;
 }
+
 .food-table th {
   background: var(--bg-elev);
   color: var(--muted);
   font-weight: 600;
 }
+
 .food-table tr:nth-child(even) {
   background: var(--card);
 }
+
 .food-table tr:hover {
   background: color-mix(in oklab, var(--accent) 15%, var(--bg) 85%);
 }
+
 td a {
   display: inline-block;
 }
 
 /* ========== Responsive Rules ========== */
+@media(max-width: 600px) {
+  .btn-back {
+    position: fixed;
+    top: 6px;
+    left: 10px;
+    padding: 2px 5px;
+  }
+}
+
 @media (max-width: 380px) {
   .macros-grid {
     grid-template-columns: 1fr;
   }
+
   .day-item {
     grid-template-columns: 1fr;
   }
+
   .day-macros {
     gap: 10px;
   }
@@ -308,6 +360,7 @@ td a {
   .macros-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
   .kcal-big {
     font-size: clamp(28px, 9vw, 40px);
   }
@@ -317,9 +370,11 @@ td a {
   .container {
     padding: 24px;
   }
+
   .today-card {
     padding: 20px;
   }
+
   .day-item {
     padding: 12px 14px;
   }
@@ -335,13 +390,13 @@ td a {
   }
 }
 
-#conf-wheel{
+#conf-wheel {
   position: absolute;
   top: 10px;
   right: 10px;
 }
 
-#conf-wheel img{
+#conf-wheel img {
   width: 32px;
   height: 32px;
 }
@@ -354,8 +409,17 @@ td a {
 }
 
 /* inline input + select */
-.form-row { display:flex; gap:8px; align-items:center; }
-.select-compact { flex:0 0 120px; }   /* adjust width if you want */
+.form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.select-compact {
+  flex: 0 0 120px;
+}
+
+/* adjust width if you want */
 
 /* make <select> match inputs */
 form select {
@@ -369,6 +433,7 @@ form select {
   margin-top: 4px;
   font-size: 14px;
 }
+
 form select:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
@@ -376,20 +441,26 @@ form select:focus {
 
 /* stack on very small screens */
 @media (max-width: 380px) {
-   .form-row { 
-    flex-direction: column; 
-  } 
+  .form-row {
+    flex-direction: column;
+  }
 
-  .form select{
+  .form select {
     max-height: 40px;
   }
 
 }
 
 @media (max-width: 320px) {
-  #activity_level_select{
-    min-width:0;           /* override 250px */
-    flex:0 1 auto;         /* allow shrinking (undo 0 0 120px) */
-    width:100%;
+  #activity_level_select {
+    min-width: 0;
+    /* override 250px */
+    flex: 0 1 auto;
+    /* allow shrinking (undo 0 0 120px) */
+    width: 100%;
   }
 }
+
+/* @media (max-width: 600px){
+  # toda
+} */

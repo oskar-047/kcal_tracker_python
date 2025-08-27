@@ -6,6 +6,7 @@ from pathlib import Path
 from repositories.sqlite.user_repo import SQLiteUserRepo
 from db.session import db_conn
 from services import i18n_service
+from i18n import I18n
 
 app = FastAPI()
 
@@ -16,6 +17,8 @@ app.include_router(meal_router.router)
 app.include_router(food_router.router)
 app.include_router(i18n_router.router)
 app.include_router(user_router.router)
+
+i18n = I18n(Path("i18n_conf"))
 
 @app.on_event("startup")
 def start_app():
@@ -31,6 +34,9 @@ async def middleware(request: Request, call_next):
 
         t = i18n_service.get_t(repo)
         request.state.t = t
+
+        request.state.i18n_en = i18n._load("en")
+        request.state.i18n_es = i18n._load("es")
 
         response = await call_next(request)
         return response

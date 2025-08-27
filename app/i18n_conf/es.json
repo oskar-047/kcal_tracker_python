@@ -4,6 +4,7 @@
   "index.macros-grid.protein": "Proteína",
   "index.macros-grid.carbs": "Carbohidratos",
   "index.macros-grid.fats": "Grasas",
+  "index.macros.left": "Restantes",
   "index.head.title": "MacroTrack — Resumen diario",
   "index.today.title": "Hoy",
   "index.today.kcal-aria": "Calorías de hoy",

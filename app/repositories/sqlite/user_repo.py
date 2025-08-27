@@ -122,3 +122,15 @@ class SQLiteUserRepo():
             return None
 
         return [UserWeight(**dict(row)) for row in rows]
+
+    def get_user_goal(self, user_id) -> dict | None:
+        row = self.conn.execute(
+            '''
+            SELECT kcal_target, protein_percent, carbs_percent, fats_percent, objective 
+            FROM user_data
+            WHERE id=?
+            ''',
+            (user_id,)
+        ).fetchone()
+
+        return dict(row) if row else None

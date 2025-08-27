@@ -58,3 +58,6 @@ def get_user_last_weight(user_repo: UserRepo, user_id: int):
         return None
 
     return max(weights, key=lambda w: w.tracked_date).weight
+
+def get_user_lan(user_repo: UserRepo, user_id):
+    return user_repo.get_user_lan(user_id)

@@ -1,0 +1,65 @@
+#today-charts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #ff000044; */
+}
+
+#donut-chart-kcal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 28%;
+}
+
+#chart-macros-cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 10px 150px;
+    /* width: 100%; */
+    /* background-color: #FF000055; */
+}
+
+#chart-macros-cont div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+}
+
+#today-charts div h2 {
+    font-size: clamp(1.5rem, 2.5vw, 2.8rem);
+}
+
+#chart-macros-cont div h3 {
+    font-size: clamp(0.9rem, 2vw, 1.4rem);
+    line-height: 0;
+    padding: 0;
+}
+
+#chart-macros-cont div h4 {
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
+    line-height: 0;
+    padding: 0; 
+}
+
+
+
+@media (max-width: 700px) {
+
+    #donut-chart-kcal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 40%;
+    }
+
+    #chart-macros-cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* margin: 10px 150px; */
+    width: 100%;
+    /* background-color: #FF000055; */
+}
+
+}

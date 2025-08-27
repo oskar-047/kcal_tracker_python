@@ -6,6 +6,7 @@
   <title>{{ t("index.head.title") }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles-charts.css">
 </head>
 
 <body class="page">
@@ -18,29 +19,62 @@
     <!-- Today recap -->
     <section class="card" aria-labelledby="today-title">
 
+      <div id="today-charts">
+
+        <div id="donut-chart-kcal">
+          <h2>kcal</h2>
+          <canvas>
+          </canvas>
+        </div>
+
+        <div id="chart-macros-cont">
+
+          <div id="donut-chart-protein">
+            <h3>{{ t("index.macros-grid.protein") }}</h3>
+            <canvas>
+            </canvas>
+            <h4>{{ today.protein.r_value }} {{ t("index.macros.left") }}</h4>
+          </div>
+
+          <div id="donut-chart-carbs">
+            <h3>{{ t("index.macros-grid.carbs") }}</h3>
+            <canvas>
+            </canvas>
+            <h4>{{ today.carbs.r_value }} {{ t("index.macros.left") }}</h4>
+          </div>
+
+          <div id="donut-chart-fats">
+            <h3>{{ t("index.macros-grid.fats") }}</h3>
+            <canvas>
+            </canvas>
+            <h4>{{ today.fats.r_value }} {{ t("index.macros.left") }}</h4>
+          </div>
+        </div>
+      </div>
+
       <a href="/user/show-info" id="conf-wheel">
         <img src="/static/img/settings-wheel.png">
       </a>
 
-      <h2 id="today-title">{{ t("index.today.title") }}</h2>
+      <!-- <h2 id="today-title">{{ t("index.today.title") }}</h2>
       <div class="kcal-big" aria-label="{{ t('index.today.kcal-aria') }}">
-        {{ today.kcal or 0 }} kcal
+        {{ today.t.kcal or 0 }} kcal
       </div>
 
       <div class="macros-grid">
         <div class="macro metric-protein">
           <span class="label">{{ t("index.macros-grid.protein") }}</span>
-          <span class="value">{{ today.protein or 0 }} g</span>
+          <span class="value">{{ today.t.protein or 0 }} g</span>
         </div>
         <div class="macro metric-carbs">
           <span class="label">{{ t("index.macros-grid.carbs") }}</span>
-          <span class="value">{{ today.carbs or 0 }} g</span>
+          <span class="value">{{ today.t.carbs or 0 }} g</span>
         </div>
         <div class="macro metric-fats">
           <span class="label">{{ t("index.macros-grid.fats") }}</span>
-          <span class="value">{{ today.fats or 0 }} g</span>
+          <span class="value">{{ today.t.fats or 0 }} g</span>
         </div>
-      </div>
+      </div> -->
 
       <div class="actions">
         <a class="btn btn-primary" href="/meals/track">{{ t("index.actions.track") }}</a>
@@ -55,7 +89,7 @@
 
       <!-- DAY SELECTOR -->
       <div class="card">
-        <form  id="form-date-change" action="/" method="get" class="form">
+        <form id="form-date-change" action="/" method="get" class="form">
           <label for="datetime">{{ t("add-meal.popup.datetime") }}</label>
           <input type="date" value="{{ date }}" id="datetime" name="dt" required>
         </form>
@@ -72,7 +106,8 @@
             <input type="hidden" value="{{ date }}" id="meal-datetime" name="dt">
 
             <input type="hidden" name="meal_id" value="{{ meal.id }}">
-            <button type="submit" data-name="{{ meal.name }}" onclick="checkDelete(event, this, 'meal')" class="bin-btn" aria-label="Delete meal" title="Delete">
+            <button type="submit" data-name="{{ meal.name }}" onclick="checkDelete(event, this, 'meal')" class="bin-btn"
+              aria-label="Delete meal" title="Delete">
               <img class="bin-img" src="/static/img/bin.png" alt="">
             </button>
           </form>
@@ -95,8 +130,23 @@
     </section>
   </main>
 
-  <script src="/static/js/delete-check.js"></script>
-  <script src="/static/js/change-date.js"></script>
+  <!-- I18N AVAILABLE FOR ALL JS SCRIPTS -->
+  <script>
+    window.I18N = JSON.parse('{{ selected_lan | tojson | safe }}');
+    window.today = JSON.parse('{{ today | tojson | safe }}');
+  </script>
+
+
+
+  <!-- CHART LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- CUSTOM SCRIPTS -->
+  <script src="/static/js/index/macros-charts.js"></script>
+  <script src="/static/js/index/delete-check.js"></script>
+  <script src="/static/js/index/change-date.js"></script>
+
+
 
 </body>
 

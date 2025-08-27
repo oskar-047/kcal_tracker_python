@@ -18,7 +18,7 @@
         <section class="card" aria-labelledby="userconf-title">
             <h2 id="userconf-title">{{ t("user-conf.title") }}</h2>
 
-            <form action="/user/update-data" method="post" class="form" autocomplete="off">
+            <form id="user-data-form" action="/user/update-data" method="post" class="form" autocomplete="off">
                 <input type="hidden" value="{{ user.id }}" name="id">
                 <!-- Name -->
                 <label for="name">{{ t("user-conf.form.name") }}</label>
@@ -89,17 +89,15 @@
                     </button>
                 </div>
 
-
-
                 <!-- Macros distribution (%) -->
                 <label>{{ t("user-conf.form.macros-title") }}</label>
-                <input type="number" name="protein_percent" id="protein_percent" min="0" max="100" step="1"
+                <input type="number" name="protein_percent" id="protein_percent" min="0" max="100" step="0.1"
                     value="{{ user.protein_percent if user.protein_percent is not none else '' }}"
                     placeholder="{{ t('user-conf.form.protein-ph') }}">
-                <input type="number" name="carbs_percent" id="carbs_percent" min="0" max="100" step="1"
+                <input type="number" name="carbs_percent" id="carbs_percent" min="0" max="100" step="0.1"
                     value="{{ user.carbs_percent if user.carbs_percent is not none else '' }}"
                     placeholder="{{ t('user-conf.form.carbs-ph') }}">
-                <input type="number" name="fats_percent" id="fats_percent" min="0" max="100" step="1"
+                <input type="number" name="fats_percent" id="fats_percent" min="0" max="100" step="0.1"
                     value="{{ user.fats_percent if user.fats_percent is not none else '' }}"
                     placeholder="{{ t('user-conf.form.fats-ph') }}">
                 <p class="empty">{{ t("user-conf.form.macros-hint") }}</p>
@@ -123,8 +121,9 @@
     </main>
 
 
-    <script src="/static/js/activity-selector.js"></script>
-    <script src="/static/js/calculate-kcal-requirement.js"></script>
+    <script src="/static/js/user-conf/check-macros-percent.js"></script>
+    <script src="/static/js/user-conf/activity-selector.js"></script>
+    <script src="/static/js/user-conf/calculate-kcal-requirement.js"></script>
 
 </body>
 

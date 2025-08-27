@@ -28,10 +28,14 @@ def root(
     food_repo = SQLiteFoodRepo(conn)
 
     user = user_service.create_default_user(user_repo, detect_lan(request))
-    meals = meals_service.list_meals(meal_repo, food_repo, dt)    
-    today_macros = meals_service.calculate_total_macros(meals)
-    delete_meal_status = request.query_params.get("delete_status")
+    meals = meals_service.list_meals(meal_repo, food_repo, dt)
+
+    today_macros = meals_service.calculate_total_macros(user_repo, meals)
+
+    # delete_meal_status = request.query_params.get("delete_status")
     selected_date = dt or date.today()
+
+    selected_lan = request.state.i18n_en if user_service.get_user_lan(user_repo, 1) == "en" else request.state.i18n_es
 
     return templates.TemplateResponse(
         "index.html",
@@ -42,7 +46,8 @@ def root(
         "user": user,
         "meals": meals,
         "today": today_macros,
-        "delete_meal_status": delete_meal_status
+        "selected_lan": selected_lan
+        # "delete_meal_status": delete_meal_status
         # "days": days
         }
     )
