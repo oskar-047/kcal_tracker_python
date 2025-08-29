@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from app_config import templates
@@ -96,3 +96,14 @@ def delete_meal(
         target += f"?delete_status={status}"
 
     return RedirectResponse(url=target, status_code=303)
+
+# === MEAL MARKS AS READ
+@router.get("/meals/mark-as-eaten")
+def mark_meal_as_eaten(
+    request: Request,
+    meal_id: str = Query(...),
+    conn = Depends(get_db)):
+
+    repo = SQLiteMealRepo(conn)
+
+    return PlainTextResponse(meals_service.meal_eaten(repo, int(meal_id)))

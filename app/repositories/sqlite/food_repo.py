@@ -18,6 +18,7 @@ class SQLiteFoodRepo:
             ) latest
             ON uf.food_id = latest.food_id AND uf.version_date = latest.version_date
             WHERE uf.is_deleted = 0
+            ORDER BY uf.name ASC
             '''
         ).fetchall()
 

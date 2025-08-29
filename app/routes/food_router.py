@@ -101,13 +101,8 @@ def edit_food(
 
     new_food = food_service.edit_food(repo, food)
 
-    return templates.TemplateResponse(
-        "edit-food.html",
-        {
-            "request": request,
-            "t": request.state.t,
-            "food": new_food
-        }
+    return RedirectResponse(
+        url="/food/list", status_code=303
     )
 
 

@@ -24,8 +24,6 @@
         <table class="food-table">
           <thead>
             <tr>
-              <th>{{ t("food-list.table.id") }}</th>
-              <th>TEST FOOD ID</th>
               <th>{{ t("food-list.table.name") }}</th>
               <th>{{ t("food-list.table.kcal") }}</th>
               <th>{{ t("food-list.table.protein") }}</th>
@@ -38,8 +36,6 @@
           <tbody>
             {% for food in foods %}
             <tr>
-              <td>{{ food.id }}</td>
-              <td>{{ food.food_id }}</td>
               <td>{{ food.name }}</td>
               <td>{{ food.kcal }}</td>
               <td>{{ food.protein }}</td>
@@ -54,7 +50,7 @@
               <td>
                 <form method="get" action="/food/edit-food">
                   <input type="hidden" name="food_id" value="{{ food.id }}">
-                  <button data-name="{{ food.name }}" class="btn, btn-delete" type="submit">{{ t("food-list.actions.edit") }}</button>
+                  <button data-name="{{ food.name }}" class="btn, btn-delete" type="submit">{{ t("food-list.table.edit") }}</button>
                 </form>
               </td>
             </tr>

@@ -29,6 +29,7 @@
   "food-list.table.carbs": "Carbohidratos",
   "food-list.table.fats": "Grasas",
   "food-list.table.delete": "Eliminar",
+  "food-list.table.edit": "Editar",
   "food-list.actions.delete": "Eliminar",
   "food-list.body.no-foods": "No se encontraron comidas",
 

@@ -9,7 +9,7 @@ class SQLiteMealRepo:
     def list_meals(self, start: int, end: int) -> list[Meal]:
         rows = self.conn.execute(
             '''
-            SELECT id, food_id, quantity, tracked_date, meal_type
+            SELECT id, food_id, quantity, tracked_date, meal_type, eaten
             FROM meals
             WHERE tracked_date BETWEEN ? AND ?;
             ''',
@@ -60,3 +60,30 @@ class SQLiteMealRepo:
 
         return get_row_by_id(self.conn, "meals", meal.id, Meal)
 
+
+    def get_meal_eaten_status(self, meal_id) -> int:
+        row = self.conn.execute(
+            '''
+            SELECT eaten
+            FROM meals
+            WHERE id=?
+            ''',
+            (meal_id,)
+        ).fetchone()
+
+        if row:
+            return row["eaten"]
+        else:
+            raise MealNotFoundError(f"Meal {meal_id} not found")
+            
+    def set_meal_eaten_status(self, meal_id, eaten_status) -> bool:
+        cursor = self.conn.execute(
+            '''
+            UPDATE meals
+            SET eaten=?
+            WHERE id=?
+            ''',
+            (eaten_status, meal_id)
+        )
+
+        return cursor.rowcount > 0

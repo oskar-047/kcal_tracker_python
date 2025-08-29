@@ -6,3 +6,4 @@ class Meal(BaseModel):
         quantity: int
         tracked_date: int
         meal_type: int | None = None
+        eaten: int = 0

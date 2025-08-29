@@ -48,6 +48,7 @@ def meals_to_macros(meals: list[Meal], food_repo: FoodRepo) -> list[dict]:
             "protein": round(food.protein * multiplier, 1),
             "carbs": round(food.carbs * multiplier, 1),
             "fats": round(food.fats * multiplier, 1),
+            "eaten": meal.eaten
         })
 
     return macros
@@ -91,49 +92,21 @@ def calculate_total_macros(user_repo: UserRepo, meals: list[dict]) -> dict:
 
     today["t"] = totals
 
-    # kcal_target = g["kcal_target"] + g["objective"]
-    # protein_target = g["protein_percent"]/100*kcal_target/4
-    # carbs_target = g["carbs_percent"]/100*kcal_target/4
-    # fats_target = g["fats_percent"]/100*kcal_target/9
-
-    # # r=remaining, e=extra
-    # kcal = {
-    #     "value": min(totals["kcal"], kcal_target),
-    #     "r_value": max(0, kcal_target-totals["kcal"]),
-    #     "objective": kcal_target,
-    #     "e_value": max(0, totals["kcal"]-kcal_target),
-    #     "e_r_value": max(0, kcal_target*2-totals["kcal"])
-    # }
-
-    # protein = {
-    #     "value": min(totals["protein"], protein_target),
-    #     "r_value": max(0, protein_target-totals["protein"]),
-    #     "objective": protein_target,
-    #     "e_value": max(0, totals["protein"]-protein_target),
-    #     "e_r_value": max(0, protein_target*2-totals["protein"])
-    # }
-
-    # carbs = {
-    #     "value": min(totals["carbs"], carbs_target),
-    #     "r_value": max(0, carbs_target-totals["carbs"]),
-    #     "objective": carbs_target,
-    #     "e_value": max(0, totals["carbs"]-carbs_target),
-    #     "e_r_value": max(0, carbs_target*2-totals["carbs"])
-    # }
-
-    # fats = {
-    #     "value": min(totals["fats"], fats_target),
-    #     "r_value": max(0, fats_target-totals["fats"]),
-    #     "objective": fats_target,
-    #     "e_value": max(0, totals["fats"]-fats_target),
-    #     "e_r_value": max(0, fats_target*2-totals["fats"])
-    # }
-
-    # # t=totals, o=objectives, e=extra
-    # today = {"t": totals, "kcal": kcal, "protein": protein, "carbs": carbs, "fats": fats}
-
     return today
 
 def delete_meal(meal_repo: MealRepo, meal_id: int):
 
     return meal_repo.delete_meal(int(meal_id))
+
+def meal_eaten(meal_repo: MealRepo, meal_id: int):
+
+    eaten_status = meal_repo.get_meal_eaten_status(meal_id)
+
+    new_eaten_status = 0 if eaten_status == 1 else 1
+
+    if meal_repo.set_meal_eaten_status(meal_id, new_eaten_status):
+        return "" if new_eaten_status == 0 else "rgba(0, 255, 0, 0.15)"
+
+    else:
+        return ""
+    

@@ -57,3 +57,13 @@ def migration_1(conn):
         )
 
         conn.execute("UPDATE user_food SET food_id = id WHERE food_id IS NULL")
+
+
+def migration_2(conn):
+    if not column_exists(conn, "meals", "eaten"):
+        conn.execute(
+            '''
+            ALTER TABLE meals
+            ADD COLUMN eaten BOOLEAN DEFAULT 0
+            '''
+        )

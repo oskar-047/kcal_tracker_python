@@ -62,7 +62,8 @@ def init_db(conn):
         food_id         INTEGER NOT NULL,
         quantity        INTEGER NOT NULL,
         tracked_date    INTEGER DEFAULT (strftime('%s', 'now')),
-        meal_type       INTEGER DEFAULT (0),
+        meal_type       INTEGER DEFAULT 0,
+        eaten           BOOLEAN DEFAULT 0
         FOREIGN KEY     (food_id) REFERENCES user_food(id) ON DELETE CASCADE
         )
         '''

@@ -30,6 +30,7 @@
   "food-list.table.carbs": "Carbs",
   "food-list.table.fats": "Fats",
   "food-list.table.delete": "Delete",
+  "food-list.table.edit": "Edit",
   "food-list.actions.delete": "Delete",
   "food-list.body.no-foods": "No foods found",
 
