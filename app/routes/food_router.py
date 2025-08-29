@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, APIRouter, Depends, Form
+from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -7,6 +7,7 @@ from db.database import get_db
 from domain.food import Food
 from repositories.sqlite.food_repo import SQLiteFoodRepo
 from services import food_service
+from schemas.food_edit import FoodEdit
 
 router = APIRouter()
 
@@ -22,7 +23,7 @@ def show_new_food_HTML(request: Request):
         }
     )
 
-# --- SHOWS FOOD HTML
+# --- SHOWS FOOD LIST HTML
 @router.get("/food/list", response_class=HTMLResponse)
 def show_new_food_HTML(request: Request, conn = Depends(get_db)):
 
@@ -38,6 +39,29 @@ def show_new_food_HTML(request: Request, conn = Depends(get_db)):
             "foods": foods
         }
     )
+
+# === SHOWS FOOD EDIT HTML WITH DATA
+@router.get("/food/edit-food", response_class=HTMLResponse)
+def show_edit_food_HTML(
+    request: Request, 
+    food_id: str = Query(...),
+    conn = Depends(get_db)):
+
+    repo = SQLiteFoodRepo(conn)
+
+    food = food_service.get_food_by_id(repo, food_id)
+
+    return templates.TemplateResponse(
+        "edit-food.html",
+        {
+            "request": request,
+            "t": request.state.t,
+            "food": food
+        }
+    )
+
+
+
 
 # ======= ACTIONS =======
 # === CREATE ===
@@ -65,6 +89,27 @@ def create_food(
             "food": added_food
         }
     )
+
+# === EDIT ===
+@router.post("/food/edit-food")
+def edit_food(
+    request: Request,
+    food = Depends(FoodEdit.as_form),
+    conn = Depends(get_db)
+):
+    repo = SQLiteFoodRepo(conn)
+
+    new_food = food_service.edit_food(repo, food)
+
+    return templates.TemplateResponse(
+        "edit-food.html",
+        {
+            "request": request,
+            "t": request.state.t,
+            "food": new_food
+        }
+    )
+
 
 # === DELETE ===
 @router.post("/food/delete-food")

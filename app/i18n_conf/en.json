@@ -104,6 +104,16 @@
   "user-conf.form.sex": "Sex",
   "user-conf.form.male": "Male",
   "user-conf.form.female": "Female",
-  "user-conf.form.auto-kcal": "Auto-calculate"
+  "user-conf.form.auto-kcal": "Auto-calculate",
+
+  "edit-food.head.title": "Edit Food",
+  "edit-food.header.back": "Back",
+  "edit-food.header.title": "Edit Food",
+  "edit-food.form.name.label": "Name",
+  "edit-food.form.kcal.label": "Calories (kcal)",
+  "edit-food.form.protein.label": "Protein (g)",
+  "edit-food.form.carbs.label": "Carbohydrates (g)",
+  "edit-food.form.fats.label": "Fats (g)",
+  "edit-food.form.submit": "Save"
 
 }

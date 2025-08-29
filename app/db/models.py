@@ -47,7 +47,9 @@ def init_db(conn):
         protein     REAL    NOT NULL,
         carbs       REAL    NOT NULL,
         fats        REAL    NOT NULL,
-        is_deleted  BOOL    DEFAULT (0)
+        is_deleted  BOOL    DEFAULT (0),
+        version_date INTEGER DEFAULT (strftime('%s', 'now'),
+        food_id     INTEGER DEFAULT NULL
         )
         '''
     )

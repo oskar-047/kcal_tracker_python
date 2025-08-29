@@ -25,18 +25,21 @@
           <thead>
             <tr>
               <th>{{ t("food-list.table.id") }}</th>
+              <th>TEST FOOD ID</th>
               <th>{{ t("food-list.table.name") }}</th>
               <th>{{ t("food-list.table.kcal") }}</th>
               <th>{{ t("food-list.table.protein") }}</th>
               <th>{{ t("food-list.table.carbs") }}</th>
               <th>{{ t("food-list.table.fats") }}</th>
               <th>{{ t("food-list.table.delete") }}</th>
+              <th>{{ t("food-list.table.edit") }}</th>
             </tr>
           </thead>
           <tbody>
             {% for food in foods %}
             <tr>
               <td>{{ food.id }}</td>
+              <td>{{ food.food_id }}</td>
               <td>{{ food.name }}</td>
               <td>{{ food.kcal }}</td>
               <td>{{ food.protein }}</td>
@@ -46,6 +49,12 @@
                 <form method="post" action="/food/delete-food">
                   <input type="hidden" name="food_id" value="{{ food.id }}">
                   <button data-name="{{ food.name }}" onclick="checkDelete(event, this, 'food')" class="btn, btn-delete" type="submit">{{ t("food-list.actions.delete") }}</button>
+                </form>
+              </td>
+              <td>
+                <form method="get" action="/food/edit-food">
+                  <input type="hidden" name="food_id" value="{{ food.id }}">
+                  <button data-name="{{ food.name }}" class="btn, btn-delete" type="submit">{{ t("food-list.actions.edit") }}</button>
                 </form>
               </td>
             </tr>

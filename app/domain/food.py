@@ -7,6 +7,7 @@ class Food(BaseModel):
     protein: float
     carbs: float
     fats: float
+    food_id: int | None = None
 
     class Config:
         extra = "ignore"

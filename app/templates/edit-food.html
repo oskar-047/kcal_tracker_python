@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ t("edit-food.head.title") }}</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+  <header class="header">
+    <a href="/" class="btn btn-back">← {{ t("edit-food.header.back") }}</a>
+    <div class="app-title">{{ t("edit-food.header.title") }}</div>
+  </header>
+
+  <main class="container">
+    <form action="/food/edit-food" method="POST" class="card" autocomplete="off">
+      <input type="hidden" name="food_id" value="{{ food.food_id }}">
+
+      <label for="name">{{ t("edit-food.form.name.label") }}</label>
+      <input type="text" id="name" name="name" value="{{ food.name }}" required>
+
+      <label for="kcal">{{ t("edit-food.form.kcal.label") }}</label>
+      <input type="number" id="kcal" name="kcal" step="1" min="0" value="{{ food.kcal }}"
+        oninput="this.value = this.value.replace(/\./g, '').replace(/,/g, '');" required>
+
+      <label for="protein">{{ t("edit-food.form.protein.label") }}</label>
+      <input type="number" id="protein" name="protein" step="0.1" min="0" value="{{ food.protein }}" required>
+
+      <label for="carbs">{{ t("edit-food.form.carbs.label") }}</label>
+      <input type="number" id="carbs" name="carbs" step="0.1" min="0" value="{{ food.carbs }}" required>
+
+      <label for="fats">{{ t("edit-food.form.fats.label") }}</label>
+      <input type="number" id="fats" name="fats" step="0.1" min="0" value="{{ food.fats }}" required>
+
+      <div class="actions">
+        <button type="submit" class="btn">{{ t("edit-food.form.submit") }}</button>
+      </div>
+    </form>
+  </main>
+
+</body>
+
+</html>

@@ -32,3 +32,28 @@ def index_exists(conn, index: str) -> bool:
 
     return result is not None
 
+def migration_1(conn):
+    if not column_exists(conn, "user_food", "version_date"):
+        conn.execute(
+            '''
+            ALTER TABLE user_food 
+            ADD COLUMN version_date INTEGER DEFAULT NULL
+            '''
+        )
+
+        conn.execute(
+        '''
+        UPDATE user_food 
+        SET version_date = strftime('%s', 'now') 
+        WHERE version_date IS NULL
+        ''')
+
+    if not column_exists(conn, "user_food", "food_id"):
+        conn.execute(
+            '''
+            ALTER TABLE user_food
+            ADD COLUMN food_id INTEGER DEFAULT NULL
+            '''
+        )
+
+        conn.execute("UPDATE user_food SET food_id = id WHERE food_id IS NULL")
