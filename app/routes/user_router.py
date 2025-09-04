@@ -49,3 +49,27 @@ def update_user_data(
             "t": request.state.t
         }
     )
+
+# ===== TRACK USER WEIGHT =====
+@router.post("/user/track/weight", response_class=HTMLResponse)
+def track_user_weight(
+    request: Request,
+    weight: str = Form(...),
+    dt: str = Form(...),
+    conn = Depends(get_db)
+):
+
+    repo = SQLiteUserRepo(conn)
+
+    tracked_weight = user_service.track_new_weight(repo, weight, 1, dt)
+
+    return templates.TemplateResponse(
+        "weight-track.html",
+        {
+            "request": request,
+            "weight": tracked_weight,
+            "new_track": tracked_weight,
+            "date": dt,
+            "t": request.state.t
+        }
+    )

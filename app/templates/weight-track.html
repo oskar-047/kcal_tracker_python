@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ t("weight-track.section.title") }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body class="page">
+    <!-- Topbar -->
+    <header class="header">
+        <a href="/" class="btn btn-back">← {{ t("food-list.header.back") }}</a>
+        <h1 class="app-title">{{ t("weight-track.section.title") }}</h1>
+    </header>
+
+    <main class="container">
+        <section class="card" aria-labelledby="weight-track-title">
+            <h2 id="weight-track-title">{{ t("weight-track.section.subtitle") }}</h2>
+
+            <form action="/user/track/weight" method="post" class="form" autocomplete="off">
+                <!-- kg -->
+                <label for="weight">{{ t("weight-track.section.weight-label") }}</label>
+                <input id="weight" name="weight" type="number" step="0.1" min="20" max="400" inputmode="decimal"
+                    placeholder="{{ t('weight-track.section.kg-placeholder') }}" value="{{ weight if weight else '' }}"
+                    required>
+
+                <!-- date -->
+                <label for="dt">{{ t("weight-track.section.date-label") }}</label>
+                <input id="dt" name="dt" type="date" value="{{ date if date else ''}}" required>
+
+                <!-- submit -->
+                <div class="actions" style="justify-content:flex-start">
+                    <button type="submit" class="btn btn-primary">
+                        {{ t("weight-track.section.submit") }}
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+</body>
+
+</html>

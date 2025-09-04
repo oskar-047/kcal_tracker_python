@@ -1,6 +1,8 @@
 import sqlite3
 from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
 from domain.meal import Meal
+from datetime import date
+from collections import defaultdict
 
 class SQLiteMealRepo:
     def __init__(self, conn):
@@ -87,3 +89,24 @@ class SQLiteMealRepo:
         )
 
         return cursor.rowcount > 0
+
+    def get_daily_kcal(self, min_dt, max_dt) -> dict[date, int]:
+        rows = self.conn.execute(
+            '''
+            SELECT DATE(m.tracked_date, 'unixepoch') AS dt,
+            SUM(ROUND(m.quantity * f.kcal / 100, 0)) AS kcal
+            FROM meals m
+            JOIN user_food f ON m.food_id = f.id
+            WHERE m.tracked_date >= ? AND m.tracked_date < ?
+            GROUP BY dt
+            ORDER BY dt
+            ''',
+            (min_dt, max_dt)
+        ).fetchall()
+
+        
+        return defaultdict(lambda: None, {
+            date.fromisoformat(row["dt"]): row["kcal"] for row in rows
+        }) if rows else defaultdict(lambda: None)
+
+

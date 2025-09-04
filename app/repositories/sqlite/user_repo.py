@@ -95,10 +95,10 @@ class SQLiteUserRepo():
 
         return True if cursor.rowcount > 0 else False
 
-    def track_weight(self, user_id: int, weight: float) -> float:
+    def track_weight(self, weight: float, user_id: int, date) -> float:
         cur = self.conn.execute(
-            "INSERT INTO user_weight(user_id, weight) VALUES(?, ?)",
-            (user_id, weight),
+            "INSERT INTO user_weight(user_id, weight, tracked_date) VALUES(?, ?, ?)",
+            (user_id, weight, date),
         )
 
         row_id = cur.lastrowid
@@ -111,7 +111,7 @@ class SQLiteUserRepo():
     def get_all_tracked_weights(self, user_id) -> list[UserWeight] | None:
         rows = self.conn.execute(
             '''
-            SELECT user_id, weight, tracked_date 
+            SELECT id, user_id, weight, tracked_date 
             FROM user_weight
             WHERE user_id=?
             ''',

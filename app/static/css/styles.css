@@ -462,6 +462,76 @@ form select:focus {
   }
 }
 
-/* @media (max-width: 600px){
-  # toda
-} */
+
+
+/* ===== Filters / Controls bar ===== */
+.controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elev);
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+}
+
+/* make selects and inputs outside <form> match form styling */
+.controls select,
+.controls input[type="number"] {
+  min-width: 140px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.controls select:focus-visible,
+.controls input[type="number"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* checkbox: use native but themed */
+.controls input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);   /* modern browsers */
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* label next to checkbox */
+.check-inline {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* compact on small screens */
+@media (max-width: 420px) {
+  .controls {
+    gap: 8px;
+    padding: 8px;
+  }
+  .controls select,
+  .controls input[type="number"] {
+    min-width: 110px;
+    font-size: 13px;
+    padding: 7px 8px;
+  }
+  .check-inline {
+    font-size: 13px;
+    padding: 5px 6px;
+  }
+}

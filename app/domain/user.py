@@ -15,6 +15,7 @@ class UserData(BaseModel):
         lan: str | None = None
 
 class UserWeight(BaseModel):
+        id: int
         user_id: int
         weight: float
         tracked_date: int

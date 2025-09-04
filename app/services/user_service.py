@@ -48,16 +48,20 @@ def get_user_by_id(user_repo: UserRepo, user_id) -> UserData:
 
     return user_repo.get_user(user_id)
 
-def track_new_weight(user_repo: UserRepo, id: int, weight: float):
-    return user_repo.track_weight(id, weight)
+def get_user_lan(user_repo: UserRepo, user_id):
+    return user_repo.get_user_lan(user_id)
+
+# ======= WEIGHT CONTROL =======
+def track_new_weight(user_repo: UserRepo, weight: float, id: int, dt: str) -> int:
+
+    ts_date = int(datetime.fromisoformat(dt).timestamp())
+
+    return user_repo.track_weight(weight, id, ts_date)
 
 def get_user_last_weight(user_repo: UserRepo, user_id: int):
     weights = user_repo.get_all_tracked_weights(user_id)
 
     if not weights:
-        return None
+        return "None"
 
     return max(weights, key=lambda w: w.tracked_date).weight
-
-def get_user_lan(user_repo: UserRepo, user_id):
-    return user_repo.get_user_lan(user_id)

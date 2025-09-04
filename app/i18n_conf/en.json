@@ -18,6 +18,9 @@
   "index.history.carbs-label": "carbohydrates:",
   "index.history.empty": "No entries yet.",
   "index.actions.change-day": "Change day",
+  "index.menu.log_food": "Track food",
+  "index.menu.track_weight": "Track weight",
+  "index.menu.statistics": "Statistics",
 
   "food-list.head.title": "Food List – MacroTrack",
   "food-list.header.back": "Back",
@@ -33,6 +36,9 @@
   "food-list.table.edit": "Edit",
   "food-list.actions.delete": "Delete",
   "food-list.body.no-foods": "No foods found",
+  "food-list.search.placeholder": "Search a food",
+  "food-list.search.title": "Search",
+  "food-list.search.button": "Search",
 
   "food-create.head.title": "Create Food – MacroTrack",
   "food-create.header.back": "Back",
@@ -115,6 +121,14 @@
   "edit-food.form.protein.label": "Protein (g)",
   "edit-food.form.carbs.label": "Carbohydrates (g)",
   "edit-food.form.fats.label": "Fats (g)",
-  "edit-food.form.submit": "Save"
+  "edit-food.form.submit": "Save",
+
+  "weight-track.section.title": "Track Weight",
+  "weight-track.section.subtitle": "Log your body weight",
+  "weight-track.section.change-lan": "Change language",
+  "weight-track.section.kg-label": "Weight (kg)",
+  "weight-track.section.kg-placeholder": "Enter your weight",
+  "weight-track.section.date-label": "Date",
+  "weight-track.section.submit": "Save weight"
 
 }

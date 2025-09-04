@@ -40,6 +40,30 @@ def show_new_food_HTML(request: Request, conn = Depends(get_db)):
         }
     )
 
+# === FUZZY SEARCH ===
+@router.get("/food/list/search", response_class=HTMLResponse)
+def food_fuzzy_search(
+    request: Request,
+    query: str = Query(None),
+    conn = Depends(get_db)):
+
+    repo = SQLiteFoodRepo(conn)
+    foods, scores = food_service.fuzzy_search(repo, query, 10)
+
+    # dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
+
+    return templates.TemplateResponse(
+        "list-foods.html",
+        {
+            "request": request,
+            # "date": dt,
+            "foods": foods,
+            "scores": scores,
+            "query": query,
+            "t": request.state.t
+        }
+    )
+
 # === SHOWS FOOD EDIT HTML WITH DATA
 @router.get("/food/edit-food", response_class=HTMLResponse)
 def show_edit_food_HTML(

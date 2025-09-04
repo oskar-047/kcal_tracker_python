@@ -78,6 +78,7 @@ def calculate_total_macros(user_repo: UserRepo, meals: list[dict]) -> dict:
         "fats": g["fats_percent"]/100*kcal_target/9
     }
 
+    # function for making all macros dict with the data needed for the graphs
     def make_macro_dict(name: str, target):
         total = totals[name]
         return {

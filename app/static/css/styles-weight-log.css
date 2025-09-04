@@ -1,0 +1,14 @@
+#weight-chart{
+    width: 600px;
+    height: 1700px;
+    margin: auto;
+}
+
+#weight-chart h2{
+    color: red;
+}
+
+#weight-chart canvas{
+    width: 100%;
+    height: 100%;
+}

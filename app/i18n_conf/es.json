@@ -17,6 +17,9 @@
   "index.history.fats-label": "grasas:",
   "index.history.carbs-label": "carbohidratos:",
   "index.history.empty": "Aún no hay registros.",
+  "index.menu.log_food": "Registrar comida",
+  "index.menu.track_weight": "Registrar peso",
+  "index.menu.statistics": "Estadísticas",
 
   "food-list.head.title": "Lista de Comidas – MacroTrack",
   "food-list.header.back": "Atrás",
@@ -32,6 +35,9 @@
   "food-list.table.edit": "Editar",
   "food-list.actions.delete": "Eliminar",
   "food-list.body.no-foods": "No se encontraron comidas",
+   "food-list.search.placeholder": "Escribe una comida",
+  "food-list.search.title": "Buscar",
+  "food-list.search.button": "Buscar",
 
   "food-create.head.title": "Crear comida – MacroTrack",
   "food-create.header.back": "Atrás",
@@ -64,6 +70,7 @@
   "add-meal.table.carbs": "Carbohidratos",
   "add-meal.table.fats": "Grasas",
   "add-meal.table.score": "Puntuación",
+  "add-meal.action.track": "Trackear comida",
 
   "user-conf.head.title": "Configuración de usuario – MacroTrack",
   "user-conf.header.back": "Volver",
@@ -111,6 +118,14 @@
   "edit-food.form.protein.label": "Proteínas (g)",
   "edit-food.form.carbs.label": "Carbohidratos (g)",
   "edit-food.form.fats.label": "Grasas (g)",
-  "edit-food.form.submit": "Guardar"
+  "edit-food.form.submit": "Guardar",
+
+  "weight-track.section.title": "Registrar peso",
+  "weight-track.section.subtitle": "Anota tu peso corporal",
+  "weight-track.section.change-lan": "Cambiar idioma",
+  "weight-track.section.kg-label": "Peso (kg)",
+  "weight-track.section.kg-placeholder": "Introduce tu peso",
+  "weight-track.section.date-label": "Fecha",
+  "weight-track.section.submit": "Guardar peso"
 
 }

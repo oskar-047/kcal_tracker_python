@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="stylesheet" href="/static/css/styles-charts.css">
+  <link rel="stylesheet" href="/static/css/styles-index-footer.css">
 </head>
 
 <body class="page">
@@ -79,12 +80,12 @@
       {% if meals and meals|length > 0 %}
       <ul class="day-list">
         {% for meal in meals %}
-        
+
         {% if meal.eaten == 1 %}
         <li style="background-color: rgba(0, 255, 0, 0.15);" data-id="{{ meal.id }}" class="day-item">
-        {% else %}
+          {% else %}
         <li data-id="{{ meal.id }}" class="day-item">
-        {% endif %}
+          {% endif %}
 
           <form class="delete-form" action="/meals/delete" method="post">
 
@@ -113,6 +114,87 @@
       {% endif %}
 
     </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+      <img src="/static/img/home.svg">
+    </footer>
+
+
+    <div class="sheet-backdrop" id="sheet-backdrop"></div>
+    <div class="sheet" id="quick-menu">
+      <div class="sheet-handle"></div>
+
+      <div class="sheet-grid">
+        <!-- Track food -->
+        <a class="sheet-card" href="/meals/track">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#4cc38a">
+              <path d="M7 2h2v8h1V2h2v8c0 1.1-.9 2-2 2v10H9V12c-1.1 0-2-.9-2-2V2zm9 0c-1.1 0-2 .9-2 2v8h2v10h2V2h-2z" />
+            </svg>
+          </span>
+          <span class="label">{{ t("index.menu.log_food") }}</span>
+        </a>
+
+
+        <!-- Track weight -->
+        <a class="sheet-card" href="/statistics/weight/track">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#ff9800">
+              <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 
+               0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 
+               0 0 0-2-2zm0 16H5V5h14v14z" />
+              <path d="M12 7a5 5 0 0 0-5 5h2a3 3 0 0 
+               1 6 0h2a5 5 0 0 0-5-5zm0 4a1 1 
+               0 1 0 0-2 1 1 0 0 0 0 2z" />
+            </svg>
+          </span>
+          <span class="label">{{ t("index.menu.track_weight") }}</span>
+        </a>
+
+
+
+
+        <!-- Statistics -->
+        <a class="sheet-card" href="/statistics/main">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#2196f3">
+              <path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 
+                   0h2v-4h-2v4zm4 0h2V4h-2v13zm4 
+                   0h2V9h-2v8z" />
+            </svg>
+          </span>
+          <span class="label">{{ t("index.menu.statistics") }}</span>
+        </a>
+      </div>
+    </div>
+
+
+
+    <script>
+      const home = document.querySelector('#footer img');
+      const sheet = document.getElementById('quick-menu');
+      const backdrop = document.getElementById('sheet-backdrop');
+
+      function toggleSheet() {
+        sheet.classList.toggle('show');
+        backdrop.classList.toggle('show');
+        home.classList.toggle('menu-open');
+      }
+      home.addEventListener('click', toggleSheet);
+      backdrop?.addEventListener('click', toggleSheet);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { sheet.classList.remove('show'); backdrop.classList.remove('show'); home.classList.remove('menu-open'); }
+      });
+
+      // hook up actions
+      document.getElementById('btn-log-food')?.addEventListener('click', () => { /* open food flow */ toggleSheet(); });
+      document.getElementById('btn-log-weight')?.addEventListener('click', () => { /* open weight flow */ toggleSheet(); });
+      document.getElementById('btn-stats')?.addEventListener('click', () => { /* open stats view */ toggleSheet(); });
+    </script>
+
+
+
   </main>
 
   <!-- I18N AVAILABLE FOR ALL JS SCRIPTS -->

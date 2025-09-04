@@ -37,8 +37,8 @@ class SQLiteFoodRepo:
         cursor = self.conn.execute(
             '''
             
-                INSERT INTO user_food (name, kcal, protein, carbs, fats)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO user_food (name, kcal, protein, carbs, fats, version_date)
+                VALUES (?, ?, ?, ?, ?, strftime('%s', 'now'))
             
             ''',
             (food.name, food.kcal, food.protein, food.carbs, food.fats)
