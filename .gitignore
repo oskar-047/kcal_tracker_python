@@ -13,4 +13,4 @@ __pycache__/
 *.log
 *.ods
 *.odt
-
+pyrightconfig.json

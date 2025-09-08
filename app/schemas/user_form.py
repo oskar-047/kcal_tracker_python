@@ -7,7 +7,6 @@ class UserDataEdit(BaseModel):
     name: str | None = None
     is_male: str | None = None
     age: str | None = None
-    weight: str | None = None
     height: str | None = None
     kcal_target: str | None = None
     activity_level: str | None = None
@@ -23,7 +22,6 @@ class UserDataEdit(BaseModel):
         name: str | None = Form(None),
         is_male: str | None = Form(None),
         age: str | None = Form(None),
-        weight: str | None = Form(None),
         height: str | None = Form(None),
         kcal_target: str | None = Form(None),
         protein_percent: str | None = Form(None),

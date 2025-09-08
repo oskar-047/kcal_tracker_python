@@ -19,12 +19,7 @@ def update_user_data(user_repo: UserRepo, data: UserDataEdit):
 
     lan = user_repo.get_user_lan(1)
 
-    weight = 0
-
-    if data.weight:
-        weight = track_new_weight(user_repo, int(data.id), float(data.weight))
-    else:
-        weight = get_user_last_weight(user_repo, int(data.id))
+    weight = get_user_last_weight(user_repo, int(data.id))
 
     updated_user_data = UserData(
         id=to_int(data.id),
@@ -52,7 +47,7 @@ def get_user_lan(user_repo: UserRepo, user_id):
     return user_repo.get_user_lan(user_id)
 
 # ======= WEIGHT CONTROL =======
-def track_new_weight(user_repo: UserRepo, weight: float, id: int, dt: str) -> int:
+def track_new_weight(user_repo: UserRepo, weight: float, id: int, dt: str) -> float:
 
     ts_date = int(datetime.fromisoformat(dt).timestamp())
 

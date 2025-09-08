@@ -68,3 +68,9 @@ def init_db(conn):
         )
         '''
     )
+
+    # cursor.execute(
+    #     '''
+    #     CREATE INDEX idx_
+    #     '''
+    # )

@@ -1,12 +1,13 @@
 import sqlite3
 from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
 from domain.user import UserData, UserWeight
+from datetime import date
 
 class SQLiteUserRepo():
     def __init__(self, conn):
         self.conn = conn
 
-    def get_user(self, user_id: int) -> UserData:
+    def get_user(self, user_id: int) -> UserData | None:
         user_data = self.conn.execute(
             '''
             SELECT * FROM user_data
@@ -28,7 +29,7 @@ class SQLiteUserRepo():
             INSERT INTO user_data (
             name, height, is_male, kcal_target, activity_level, 
             protein_percent, carbs_percent, fats_percent, objective, lan
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''',
             (data.name, data.height, data.is_male, data.kcal_target,
             data.activity_level, data.protein_percent, data.carbs_percent,
@@ -72,7 +73,7 @@ class SQLiteUserRepo():
 
 
 
-    def get_user_lan(self, user_id: int) -> str | None:
+    def get_user_lan(self, user_id: int) -> str:
         lan = self.conn.execute(
             '''
             SELECT lan 
@@ -84,7 +85,7 @@ class SQLiteUserRepo():
 
         return lan[0] if lan else "en"
 
-    def change_user_lan(self, user_id, lan) -> bool:
+    def change_user_lan(self, user_id: int, lan: str) -> bool:
         cursor = self.conn.execute(
             '''
             UPDATE user_data 
@@ -95,10 +96,10 @@ class SQLiteUserRepo():
 
         return True if cursor.rowcount > 0 else False
 
-    def track_weight(self, weight: float, user_id: int, date) -> float:
+    def track_weight(self, weight: float, user_id: int, dt: date) -> float:
         cur = self.conn.execute(
             "INSERT INTO user_weight(user_id, weight, tracked_date) VALUES(?, ?, ?)",
-            (user_id, weight, date),
+            (user_id, weight, dt),
         )
 
         row_id = cur.lastrowid

@@ -3,7 +3,7 @@ import unicodedata, re
 from repositories.interfaces import FoodRepo
 from domain.food import Food
 
-def fuzzy_search(key, foods: list[Food], limit: int):
+def fuzzy_search(key, foods: list[Food], limit: int) -> tuple[list[Food], list[float]]:
     
     key = normalize(key)
 

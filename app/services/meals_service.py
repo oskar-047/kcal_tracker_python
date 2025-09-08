@@ -4,6 +4,7 @@ from repositories.interfaces import MealRepo
 from repositories.interfaces import UserRepo
 from domain.food import Food
 from repositories.interfaces import FoodRepo
+from services.helpers import warning
 
 def track_meal(meal_repo: MealRepo, food_id: int, quantity: int, dt: datetime):
 
@@ -69,14 +70,18 @@ def calculate_total_macros(user_repo: UserRepo, meals: list[dict]) -> dict:
     # g means goals
     g = user_repo.get_user_goal(1)
 
-    kcal_target = g["kcal_target"] + g["objective"]
+    if g:
+        kcal_target = g["kcal_target"] + g["objective"]
 
-    target = {
-        "kcal": kcal_target,
-        "protein": g["protein_percent"]/100*kcal_target/4,
-        "carbs": g["carbs_percent"]/100*kcal_target/4,
-        "fats": g["fats_percent"]/100*kcal_target/9
-    }
+        target = {
+            "kcal": kcal_target,
+            "protein": g["protein_percent"]/100*kcal_target/4,
+            "carbs": g["carbs_percent"]/100*kcal_target/4,
+            "fats": g["fats_percent"]/100*kcal_target/9
+        }
+    else:
+        warning("User goals not found / user not found")
+        target = {"kcal": 0, "protein": 0, "carbs": 0, "fats": 0}
 
     # function for making all macros dict with the data needed for the graphs
     def make_macro_dict(name: str, target):

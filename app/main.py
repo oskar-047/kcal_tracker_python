@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from routes import main_router, meal_router, food_router, i18n_router, user_router, statistics_router
+from routes import main_router, meal_router, food_router, i18n_router, user_router, statistics_router, fuzzy_router
 from db.migrations_control import run_migrations
 from pathlib import Path
 from repositories.sqlite.user_repo import SQLiteUserRepo
@@ -18,6 +18,7 @@ app.include_router(food_router.router)
 app.include_router(i18n_router.router)
 app.include_router(user_router.router)
 app.include_router(statistics_router.router)
+app.include_router(fuzzy_router.router)
 
 i18n = I18n(Path("i18n_conf"))
 

@@ -100,3 +100,18 @@ class SQLiteFoodRepo:
         ).fetchone()
 
         return Food(**dict(row)) if row else None
+
+    def get_foods_by_ids(self, food_ids) -> list[Food]:
+
+        placeholder = ",".join("?" for _ in food_ids)
+
+        rows = self.conn.execute(
+            f'''
+            SELECT id, name, kcal, protein, carbs, fats, food_id
+            FROM user_food
+            WHERE id IN ({placeholder})
+            ''',
+            food_ids
+        ).fetchall()
+
+        return [Food(**row) for row in rows]

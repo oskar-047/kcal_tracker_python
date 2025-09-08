@@ -2,6 +2,7 @@ const mainCanvas = document.getElementById("weight-chart").querySelector("canvas
 const daysSelect = document.getElementById("days-select");
 const daysInput = document.getElementById("days-input");
 const chartSelect = document.getElementById("chart-select");
+const timeGroupingSelect = document.getElementById("time-grouping-select");
 const showKcalCheck = document.getElementById("weight-chart-show-kcal");
 let chart;
 
@@ -11,6 +12,7 @@ daysSelect.addEventListener("change", e => {
 });
 
 chartSelect.addEventListener("change", updateChart);
+timeGroupingSelect.addEventListener("change", updateChart);
 
 daysInput.addEventListener("input", updateChart);
 
@@ -23,36 +25,50 @@ async function updateChart() {
     }
 
     let days = daysInput.value;
-    if(days > 150000){
-        days = 150000;
+    if(days > 15000){
+        days = 15000;
     }
-    let chartName = chartSelect.value;
-    let showKcal = showKcalCheck.checked;
-
-    let weight_show_kcal = showKcal
-    let foods_selected_foods = [1]
-    let goals_show_macros = [false, false, false]
 
     if (!days) {
         days = 0;
     }
+    let timeGrouping = timeGroupingSelect.value;
 
-    const response = await fetch(`/statistics/show-chart`, {
-        method: "POST",
+    console.log(days + "" + timeGrouping);
+
+    const labelsResponse = await fetch('/statistics/update-labels', {
+        method:"POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
             days: days,
-            chart_name: chartName,
-            time_grouping: "weekly",
-            weight_show_kcal: weight_show_kcal,
-            foods_selected_foods: foods_selected_foods,
-            goals_show_macros: goals_show_macros
+            time_grouping: timeGrouping
         })
     });
 
-    const { chartType, data, options } = await response.json();
+    window.labels = await labelsResponse.json();
+    chart.data.labels = window.labels;
 
-    chart.type = chartType;
+    let chartName = chartSelect.value;
+
+    let weightShowKcal = showKcalCheck.checked;
+    let foodsSelectedFoods = [1]
+    let goalsShowMacros = [false, false, false]
+
+    
+
+    const dataResponse = await fetch(`/statistics/show-chart`, {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+            chart_name: chartName,
+            weight_show_kcal: weightShowKcal,
+            foods_selected_foods: foodsSelectedFoods,
+            goals_show_macros: goalsShowMacros
+        })
+    });
+
+    const { data, options } = await dataResponse.json();
+
     chart.options = options;
     chart.data = data;
     chart.update();

@@ -32,7 +32,7 @@ def edit_food(food_repo: FoodRepo, food: FoodEdit):
     return food_repo.edit_food(edit_food)
 
 # ======= FUZZY SEARCH =======
-def fuzzy_search(food_repo: FoodRepo, query: str, limit: int) -> tuple[list[Food], list[int]]:
+def fuzzy_search(food_repo: FoodRepo, query: str, limit: int) -> tuple[list[Food], list[float]]:
 
     if query is None:
         return [], []
@@ -41,5 +41,5 @@ def fuzzy_search(food_repo: FoodRepo, query: str, limit: int) -> tuple[list[Food
 
     return fuzzy_service.fuzzy_search(query, foods, limit)
 
-def get_food_by_id(food_repo: FoodRepo, food_id: int) -> Food:
+def get_food_by_id(food_repo: FoodRepo, food_id: int) -> Food | None:
     return food_repo.get_food_by_id(food_id)

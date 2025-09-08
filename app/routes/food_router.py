@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query
+from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -25,7 +25,7 @@ def show_new_food_HTML(request: Request):
 
 # --- SHOWS FOOD LIST HTML
 @router.get("/food/list", response_class=HTMLResponse)
-def show_new_food_HTML(request: Request, conn = Depends(get_db)):
+def show_food_list_HTML(request: Request, conn = Depends(get_db)):
 
     repo = SQLiteFoodRepo(conn)
 
@@ -41,6 +41,7 @@ def show_new_food_HTML(request: Request, conn = Depends(get_db)):
     )
 
 # === FUZZY SEARCH ===
+# Show list foods HTML with fuzzy search
 @router.get("/food/list/search", response_class=HTMLResponse)
 def food_fuzzy_search(
     request: Request,

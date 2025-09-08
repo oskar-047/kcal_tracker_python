@@ -9,8 +9,9 @@ from repositories.sqlite.user_repo import SQLiteUserRepo
 from repositories.sqlite.meal_repo import SQLiteMealRepo
 from repositories.sqlite.food_repo import SQLiteFoodRepo
 from services import user_service, statistics_service
+from services.graph_services.graph_helpers import update_labels
 from datetime import date
-from domain.graphs import DefaultGraph
+from domain.graphs import DefaultGraph, LabelRequest
 
 router = APIRouter()
 
@@ -27,6 +28,7 @@ def show_weight_track_HTML(
     last_weight = user_service.get_user_last_weight(user_repo, 1)
 
     dt = date.today()
+    
 
     return templates.TemplateResponse(
         "weight-track.html",
@@ -40,7 +42,7 @@ def show_weight_track_HTML(
 
 # === SHOW weight graph html
 @router.get("/statistics/main", response_class=HTMLResponse)
-def show_weight_track_HTML(
+def show_statistics_HTML(
     request: Request,
     conn = Depends(get_db)
 ):
@@ -65,6 +67,15 @@ def send_graph_data_weight(
     food_repo = SQLiteFoodRepo(conn)
 
     params = [graph_request.weight_show_kcal, graph_request.foods_selected_foods, graph_request.goals_show_macros]
-    chart_type, data, options = statistics_service.get_graph(user_repo, meal_repo, food_repo, graph_request.days, graph_request.chart_name, graph_request.time_grouping, params)
+    data, options = statistics_service.get_graph(user_repo, meal_repo, food_repo, graph_request.chart_name, params)
 
-    return {"chartType": chart_type, "data": data, "options": options}
+    return {"data": data, "options": options}
+
+
+@router.post("/statistics/update-labels")
+def make_labels(
+    request: Request,
+    req: LabelRequest
+):
+
+    return update_labels(req.days, req.time_grouping)

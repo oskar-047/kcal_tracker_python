@@ -76,7 +76,7 @@ class SQLiteMealRepo:
         if row:
             return row["eaten"]
         else:
-            raise MealNotFoundError(f"Meal {meal_id} not found")
+            raise ValueError(f"Meal {meal_id} not found")
             
     def set_meal_eaten_status(self, meal_id, eaten_status) -> bool:
         cursor = self.conn.execute(
@@ -90,11 +90,12 @@ class SQLiteMealRepo:
 
         return cursor.rowcount > 0
 
-    def get_daily_kcal(self, min_dt, max_dt) -> dict[date, int]:
+    # Function used in weights chart to get each day kcal
+    def get_daily_kcal(self, min_dt: int, max_dt: int) -> defaultdict[date, int | None]:
         rows = self.conn.execute(
             '''
             SELECT DATE(m.tracked_date, 'unixepoch') AS dt,
-            SUM(ROUND(m.quantity * f.kcal / 100, 0)) AS kcal
+            CAST(SUM(ROUND(m.quantity * f.kcal / 100, 0)) AS INTEGER) AS kcal
             FROM meals m
             JOIN user_food f ON m.food_id = f.id
             WHERE m.tracked_date >= ? AND m.tracked_date < ?
@@ -107,6 +108,50 @@ class SQLiteMealRepo:
         
         return defaultdict(lambda: None, {
             date.fromisoformat(row["dt"]): row["kcal"] for row in rows
-        }) if rows else defaultdict(lambda: None)
+        }) if rows else defaultdict(lambda: None) 
+
+    def get_meals_by_foods(self, min_dt: int, max_dt: int, foods: list): #-> tuple[dict[int, str], dict[date, dict[int, dict[str, float]]]]:
+
+        params = ",".join("?" for _ in foods)
+
+        new_foods = foods[:]
+        new_foods.append(min_dt)
+        new_foods.append(max_dt)
+
+        rows = self.conn.execute(
+            f'''
+            SELECT DATE(m.tracked_date, 'unixepoch') AS dt,
+            SUM(m.quantity * f.kcal/100) AS kcal,
+            SUM(m.quantity * f.protein/100) AS protein,
+            SUM(m.quantity * f.carbs/100) AS carbs,
+            SUM(m.quantity * f.fats/100) AS fats,
+            SUM(m.quantity) AS q,
+            MAX(f.name) AS name,
+            f.id AS id
+            FROM meals m
+            JOIN user_food f
+            ON m.food_id = f.id
+            WHERE m.food_id IN ({params})
+            AND m.tracked_date >= ?
+            AND m.tracked_date < ?
+            GROUP BY dt, f.id
+            ''',
+            new_foods
+        ).fetchall()
+
+        result_foods = defaultdict(lambda: defaultdict(dict))
+        food_names = defaultdict(lambda: None)
+
+        for row in rows:
+            result_foods[date.fromisoformat(row["dt"])][row["id"]] = {
+                "quantity": row["q"],
+                "kcal": row["kcal"],
+                "protein": row["protein"],
+                "carbs": row["carbs"],
+                "fats": row["fats"],
+            }
+
+            food_names[row["id"]] = row["name"]
 
 
+        return food_names, result_foods
