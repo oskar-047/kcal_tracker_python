@@ -1,4 +1,5 @@
 from domain.user import UserData
+from domain.graphs import DefaultGraph, DisplayMode
 from repositories.interfaces import UserRepo, MealRepo, FoodRepo
 from schemas.user_form import UserDataEdit
 from datetime import date, datetime, timedelta, timezone
@@ -10,17 +11,18 @@ import math
 import calendar
 # from domain.graphs import DefaultGraph
 
-def generate_foods_graph(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, ctx, params):
-    data, range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, params[0], params[1])
+def generate_foods_graph(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, ctx, req: DefaultGraph):
+    data, range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, req.foods_selected_foods, req.foods_display_mode)
     options = _get_options(range)
 
     return data, options
 
 
-def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, labels: list, time_grouping: str, days: int, show_kcal: bool, food_list: bool): #pyright: ignore[reportRedeclaration]
+def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, labels: list, time_grouping: str, days: int, food_list: list[int], display_mode: str):
 
     # Get all weight tracks
-    food_list: list[int] = [499, 497, 496]
+    if not food_list:
+        return {}, [0, 3200]
 
     # Gets today day
     today_date = date.today()
@@ -46,8 +48,8 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
     }
 
     # Mins and Maxes for kcal
-    max_kcal = -math.inf
-    min_kcal = math.inf
+    max_v = -math.inf
+    min_v = math.inf
 
     for k, v in food_names.items():
 
@@ -57,11 +59,11 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
         if time_grouping == "daily":
             for today in labels:
                 if daily_tracks[today][k]:
-                    today_kcal = daily_tracks[today][k]["kcal"]
+                    today_v = daily_tracks[today][k][display_mode]
                     # Calculate max and min
-                    max_kcal = today_kcal if today_kcal > max_kcal else max_kcal
-                    min_kcal = today_kcal if today_kcal < min_kcal else min_kcal
-                    food_dataset.append(today_kcal)
+                    max_v = today_v if today_v > max_v else max_v
+                    min_v = today_v if today_v < min_v else min_v
+                    food_dataset.append(today_v)
                 else:
                     food_dataset.append(None)
                 
@@ -74,12 +76,12 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                 for i in range(7):
                     today = week+timedelta(days=i)
                     if daily_tracks[today][k]:
-                        kcal_weekly_chunk.append(daily_tracks[today][k]["kcal"])
+                        kcal_weekly_chunk.append(daily_tracks[today][k][display_mode])
                 
                 week_kcal_avg = safe_avg(kcal_weekly_chunk)
                 if week_kcal_avg is not None:
-                    max_kcal = max(week_kcal_avg, max_kcal)
-                    min_kcal = min(week_kcal_avg, min_kcal)
+                    max_v = max(week_kcal_avg, max_v)
+                    min_v = min(week_kcal_avg, min_v)
                 food_dataset.append(week_kcal_avg)
                 
 
@@ -93,13 +95,13 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                 for i in range(month_days):
                     today = month+timedelta(days=i)
                     if daily_tracks[today][k]:
-                        kcal_monthly_chunk.append(daily_tracks[today][k]["kcal"])
+                        kcal_monthly_chunk.append(daily_tracks[today][k][display_mode])
 
                 # Calculate mins and max and append data to dataset
                 month_kcal_avg = safe_avg(kcal_monthly_chunk)
                 if month_kcal_avg is not None:
-                    max_kcal = max(month_kcal_avg, max_kcal)
-                    min_kcal = min(month_kcal_avg, min_kcal) 
+                    max_v = max(month_kcal_avg, max_v)
+                    min_v = min(month_kcal_avg, min_v) 
                 food_dataset.append(month_kcal_avg) 
 
 
@@ -114,7 +116,7 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                 "yAxisID": "y1"
             })         
 
-    return data, [0, 3200]
+    return data, [min_v *0.9, max_v*1.1]
 
 def _get_options(range: list):
 

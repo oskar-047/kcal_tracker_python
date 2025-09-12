@@ -6,11 +6,11 @@ from domain.food import Food
 from repositories.interfaces import FoodRepo
 from services.helpers import warning
 
-def track_meal(meal_repo: MealRepo, food_id: int, quantity: int, dt: datetime):
+def track_meal(meal_repo: MealRepo, food_id: int, quantity: int, dt: date):
 
-    timestamp = int(dt.timestamp())
+    dt_ts = int(datetime.combine(dt, time.min).timestamp())
 
-    meal = Meal(food_id=food_id, quantity=quantity, tracked_date=timestamp)
+    meal = Meal(food_id=food_id, quantity=quantity, tracked_date=dt_ts)
 
     return meal_repo.create_meal(meal)
     

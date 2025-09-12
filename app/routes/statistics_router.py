@@ -66,8 +66,9 @@ def send_graph_data_weight(
     meal_repo = SQLiteMealRepo(conn)
     food_repo = SQLiteFoodRepo(conn)
 
-    params = [graph_request.weight_show_kcal, graph_request.foods_selected_foods, graph_request.goals_show_macros]
-    data, options = statistics_service.get_graph(user_repo, meal_repo, food_repo, graph_request.chart_name, params)
+    print(graph_request.foods_selected_foods)
+
+    data, options = statistics_service.get_graph(user_repo, meal_repo, food_repo, graph_request)
 
     return {"data": data, "options": options}
 

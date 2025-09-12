@@ -1,0 +1,104 @@
+:root {
+  --bg: #0f1216;
+  --bg-elev: #161a20;
+  --text: #e6e9ef;
+  --semi-muted: #c3c6d0;
+  --muted: #9aa4b2;
+  --accent: #4cc38a;
+  --card: #12161c;
+  --border: #232a34;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+}
+
+.food-cont{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.food-cont-card{
+    display: grid;
+    padding: 10px;
+    margin: 5px 0px;
+    color: var(--text);
+    background-color: var(--bg-elev);
+    border-radius: 10px;
+    border: var(--border) 2px solid;
+    line-height: 15px;
+}
+
+.food-cont-card h2{
+    font-size: clamp(0.85rem, 1vw, 3rem);
+}
+
+.food-cont-card h3{
+    font-size: clamp(0.75rem, 0.85vw, 2rem);
+    color: var(--semi-muted);
+}
+
+.food-cont-card p{
+    font-size: clamp(0.7rem, 0.75vw, 1.9rem);
+    color: var(--muted);
+}
+
+
+.food-macros{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.food-track{
+    display: none;
+    gap: 20px;
+    width: 100%;
+    padding: 5px;
+    overflow: hidden;
+}
+.food-track input{
+    width: auto;
+    flex: 0.1 1 0;
+    min-width: 50px;
+}
+
+.food-track .dt-input{
+    min-width: 100px;
+    flex: 1 1 0;
+    text-align: center;
+    text-align-last: center;
+}
+
+.food-track .btn{
+    padding: 5px 12px;
+}
+
+.food-track input::placeholder{
+    color: rgb(80, 80, 80);
+}
+
+/* ========== ANIMATIONS SECTION ========== */
+.appear-anim{
+    animation: appear-track-sect 0.7s forwards;
+}
+.disappear-anim{
+    animation: disappear-track-sect 0.7s forwards;
+}
+
+@keyframes appear-track-sect { 
+    from {height: 0px}
+    to {height: 40px;}
+}
+
+@keyframes disappear-track-sect { 
+    from {height: 40px}
+    to {height: 0px;}
+}
+
+@media (max-width: 500px){
+    .food-track{
+        gap: 10px;
+    }
+}

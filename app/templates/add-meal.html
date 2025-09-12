@@ -8,6 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="stylesheet" href="/static/css/styles-track-dialog.css">
+  <link rel="stylesheet" href="/static/css/popup-styles.css">
+  <link rel="stylesheet" href="/static/css/styles-track-meal-foods.css">
 </head>
 
 <body class="page">
@@ -18,60 +20,45 @@
 
   <main class="container">
     <!-- Search -->
-    <section class="card" aria-labelledby="search-title">
+    <section class="card">
       <h2 id="search-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.search.title") }}</h2>
-      <form style="display: flex; flex-direction: row;" action="/meals/track/search" method="GET" role="search"
-        autocomplete="off">
-        <input id="search-query" name="query" type="text" placeholder="{{ t('add-meal.search.placeholder') }}"
-          value="{{ query or '' }}" required autofocus enterkeyhint="search">
 
-        <button style="margin-left: 10px;" type="submit" aria-label="{{ t('add-meal.search.button') }}">{{
-          t("add-meal.search.button") }}</button>
-      </form>
+      <input id="search-query" class="gen-input" type="text" placeholder="{{ t('add-meal.search.placeholder') }}" autofocus>
+
     </section>
 
     <!-- Results -->
-    <section class="card" aria-labelledby="results-title">
+    <section id="results-section">
       <h2 id="results-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.results.title") }}</h2>
 
-      {% if foods and foods|length > 0 %}
-      <div class="table-wrapper">
-        <table class="food-table" aria-describedby="results-title">
-          <thead>
-            <tr>
-              <th>{{ t("add-meal.table.name") }}</th>
-              <th>{{ t("add-meal.table.kcal") }}</th>
-              <th>{{ t("add-meal.table.protein") }}</th>
-              <th>{{ t("add-meal.table.carbs") }}</th>
-              <th>{{ t("add-meal.table.fats") }}</th>
-              <th>Score</th>
-              <th>{{ t("add-meal.table.track") }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for food in foods %}
-            <tr>
-              <td>{{ food.name }}</td>
-              <td>{{ food.kcal }}</td>
-              <td>{{ food.protein }}</td>
-              <td>{{ food.carbs }}</td>
-              <td>{{ food.fats }}</td>
-              <td>{{ scores[loop.index0] }}</td>
-              <td>
-                <button data-food-id="{{ food.id }}" class="btn btn-track">{{ t("add-meal.action.track") }}</button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <!-- {% if foods and foods|length > 0 %}
+      {% for food in foods %}
+      <div class="food-cont">
+        <div class="food-cont-card">
+          <h2 class="food-title">{{ food.name }} </h2>
+          <h3 class="food-kcal">{{ t("add-meal.table.kcal") }}: {{ food.kcal }}</h3>
+          <div class="food-macros">
+            <p class="food-macros">{{ t("add-meal.table.protein") }}: {{ food.protein }}</p>
+            <p class="food-macros">{{ t("add-meal.table.carbs") }}: {{ food.carbs }}</p>
+            <p class="food-macros">{{ t("add-meal.table.fats") }}: {{ food.fats }}</p>
+          </div>
+        </div>
+
+        <div class="food-track">
+          <input class="gen-input q-input" type="number" step="0" value="0" placeholder="{{ t('add-meal.input.quantity') }}">
+          <input class="gen-input dt-input" type="date">
+          <button data-food-id="{{ food.id }}" type="submit" class="track-btn btn">{{ t('add-meal.action.track') }}</button>
+        </div>
       </div>
+      {% endfor %}
       {% else %}
       <p class="empty">{{ t("add-meal.results.empty") }}</p>
-      {% endif %}
+      {% endif %} -->
+
     </section>
   </main>
 
-  <div style="display: none;" id="invisible-bg" onclick="occultTrackDialog()"></div>
+  <!-- <div style="display: none;" id="invisible-bg" onclick="occultTrackDialog()"></div>
   <div style="display: none;" class="card" id="track-meal-dialog">
     <form action="/meals/track/track-meal" method="post" class="form">
 
@@ -89,10 +76,16 @@
         {{ t("add-meal.action.track") }}
       </button>
     </form>
-  </div>
+  </div> -->
 
+  <script>
+    window.I18N = JSON.parse('{{ selected_lan | tojson | safe }}');
+    window.t = (k) => window.I18N[k] || k
+  </script>
 
-  <script src="/static/js/add-meal/track-dialog.js"></script>
+  <script src="/static/js/add-meal/track-section.js"></script>
+  <script src="/static/js/add-meal/foods-search.js"></script>
+  <script src="/static/js/helpers/helpers.js"></script>
 
 
 </body>

@@ -47,21 +47,40 @@
 
   <div id="foods-chart-selecter">
     <h2>FOOD LIST</h2>
-    <input id="search-query" type="text" enterkeyhint="search" autofocus>
+    <select id="display-mode">
+      <option value="kcal">KCAL Mode</option>
+      <option value="quantity">Quantity Mode</option>
+      <option value="protein">PROTEIN</option>
+      <option value="carbs">CARBS</option>
+      <option value="fats">FATS</option>
+    </select>
+    <input id="search-bar" type="text" enterkeyhint="search" autofocus>
     <div id="selected-foods">
-      <h3>Rice</h3>
+      <!-- <h3>Rice</h3> -->
     </div>
     <div id="searched-foods">
-      <div class="search-item">
+      <!-- <div class="search-item">
         <h3>Rice and cokies with that thing thas is</h3>
-        <div id="select-food-button">SELECT</div>
-      </div>
+        <div class="select-food-button">SELECT</div>
+      </div> -->
     </div>
   </div>
 
   <main class="container">
     <div id="weight-chart">
       <h2>Weight</h2>
+      <canvas></canvas>
+    </div>
+    <div id="protein-chart">
+      <h2>Protein</h2>
+      <canvas></canvas>
+    </div>
+    <div id="carbs-chart">
+      <h2>Carbs</h2>
+      <canvas></canvas>
+    </div>
+    <div id="fats-chart">
+      <h2>Fats</h2>
       <canvas></canvas>
     </div>
   </main>
@@ -72,6 +91,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- CUSTOM SCRIPTS -->
+   <script src="/static/js/weight-log/selected-foods-state.js"></script>
   <script src="/static/js/weight-log/weight-chart.js"></script>
   <script src="/static/js/weight-log/food-search.js"></script>
 </body>

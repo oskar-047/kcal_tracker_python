@@ -71,6 +71,7 @@
   "add-meal.table.carbs": "Carbs",
   "add-meal.table.fats": "Fats",
   "add-meal.table.score": "Score",
+  "add-meal.input.quantity": "Write quantity",
   "add-meal.action.track": "Track",
   "add-meal.popup.quantity": "Quantity",
   "add-meal.popup.datetime": "Datetime",

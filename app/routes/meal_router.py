@@ -6,8 +6,8 @@ from app_config import templates
 from db.database import get_db
 from domain.food import Food
 from repositories.sqlite.food_repo import SQLiteFoodRepo
-from services import food_service,meals_service
-from domain.meal import Meal
+from services import food_service,meals_service,user_service
+from domain.meal import MealTrack
 from repositories.sqlite.meal_repo import SQLiteMealRepo
 from datetime import datetime, date
 
@@ -25,57 +25,65 @@ def show_new_food_HTML(request: Request):
         {
             "request": request,
             "date": dt,
-            "t": request.state.t
+            "t": request.state.t,
+            "selected_lan": request.state.sel_lan
         }
     )
 
 # === FUZZY SEARCH ===
-@router.get("/meals/track/search", response_class=HTMLResponse)
+@router.get("/meals/track/search")
 def food_fuzzy_search(
     request: Request,
-    query: str = Query(None),
+    query: str = Query(...),
     conn = Depends(get_db)):
+
+    print(query)
+
+    # return None
 
     repo = SQLiteFoodRepo(conn)
     foods, scores = food_service.fuzzy_search(repo, query, 10)
 
-    dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
+    return foods
+    # dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
 
-    return templates.TemplateResponse(
-        "add-meal.html",
-        {
-            "request": request,
-            "date": dt,
-            "foods": foods,
-            "scores": scores,
-            "query": query,
-            "t": request.state.t
-        }
-    )
+    # return templates.TemplateResponse(
+    #     "add-meal.html",
+    #     {
+    #         "request": request,
+    #         "date": dt,
+    #         "foods": foods,
+    #         "scores": scores,
+    #         "query": query,
+    #         "t": request.state.t,
+    #         "selected_lan": request.state.sel_lan
+    #     }
+    # )
 
 
 # ======= MEAL TRACK =======
-@router.post("/meals/track/track-meal", response_class=HTMLResponse)
+@router.post("/meals/track/track-meal")
 def track_meal(
     request: Request,
-    query: str = Form(None),
-    food_id: str = Form(...),
-    quantity: int = Form(...),
-    dt: datetime = Form(...),
+    data: MealTrack,
     conn = Depends(get_db)):
 
     repo = SQLiteMealRepo(conn)
-    track = meals_service.track_meal(repo, food_id, quantity, dt)
+    track = meals_service.track_meal(repo, data.food_id, data.quantity, data.dt)
+    
+    if track:
+        return {"status": "ok"}
 
-    return templates.TemplateResponse(
-        "add-meal.html",
-        {
-            "request": request,
-            "query": query,
-            "track": track,
-            "t": request.state.t
-        }
-    )
+    return {"status": "failed"}
+    # return templates.TemplateResponse(
+    #     "add-meal.html",
+    #     {
+    #         "request": request,
+    #         "query": query,
+    #         "track": track,
+    #         "t": request.state.t
+    #     }
+    # )
 
 # ======= MEAL DELETE =======
 @router.post("/meals/delete", response_class=HTMLResponse)
@@ -96,6 +104,25 @@ def delete_meal(
         target += f"?delete_status={status}"
 
     return RedirectResponse(url=target, status_code=303)
+
+# ======= MEAL DELETE NO HTML RELOAD =======
+@router.post("/meals/live-delete-meal")
+def del_meal(
+    request: Request,
+    meal_id: int,
+    conn = Depends(get_db)
+):
+
+    repo = SQLiteMealRepo(conn)
+
+    ok = meals_service.delete_meal(repo, meal_id)
+
+    if ok:
+        return {"status": "ok"}
+
+    return {"status": "failed"}
+
+
 
 # === MEAL MARKS AS READ
 @router.get("/meals/mark-as-eaten")

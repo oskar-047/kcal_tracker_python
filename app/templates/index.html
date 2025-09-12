@@ -78,25 +78,20 @@
 
       <!-- MEALS LIST -->
       {% if meals and meals|length > 0 %}
-      <ul class="day-list">
+      <ul id="day-list-cont" class="day-list">
         {% for meal in meals %}
 
         {% if meal.eaten == 1 %}
-        <li style="background-color: rgba(0, 255, 0, 0.15);" data-id="{{ meal.id }}" class="day-item">
+        <li id="meal-item-{{ meal.id }}" style="background-color: rgba(0, 255, 0, 0.15);" data-id="{{ meal.id }}"
+          class="day-item">
           {% else %}
-        <li data-id="{{ meal.id }}" class="day-item">
+        <li id="meal-item-{{ meal.id }}" data-id="{{ meal.id }}" class="day-item">
           {% endif %}
 
-          <form class="delete-form" action="/meals/delete" method="post">
-
-            <input type="hidden" value="{{ date }}" id="meal-datetime" name="dt">
-
-            <input type="hidden" name="meal_id" value="{{ meal.id }}">
-            <button type="submit" data-name="{{ meal.name }}" onclick="checkDelete(event, this, 'meal')" class="bin-btn"
-              aria-label="Delete meal" title="Delete">
-              <img class="bin-img" src="/static/img/bin.png" alt="">
-            </button>
-          </form>
+          <button type="button" data-id="{{ meal.id }}" data-name="{{ meal.name }}" class="bin-btn"
+            aria-label="Delete meal" title="Delete">
+            <img class="bin-img" src="/static/img/bin.png" alt="">
+          </button>
 
           <div class="day-name">{{ meal.name }} ({{ meal.quantity }} g)</div>
           <!-- <div class="day-date">{{ meal.tracked_date }}</div> -->
@@ -114,6 +109,9 @@
       {% endif %}
 
     </section>
+
+    <!-- This section is simply to make  a litle padding so the user can scroll more than normal -->
+    <section style="height: 130px;"></section>
 
     <!-- FOOTER -->
     <footer id="footer">
@@ -200,6 +198,7 @@
   <!-- I18N AVAILABLE FOR ALL JS SCRIPTS -->
   <script>
     window.I18N = JSON.parse('{{ selected_lan | tojson | safe }}');
+    window.t = (k) => window.I18N[k] || k
     window.today = JSON.parse('{{ today | tojson | safe }}');
   </script>
 
@@ -209,12 +208,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- CUSTOM SCRIPTS -->
+  <script src="/static/js/i18n.js"></script>
   <script src="/static/js/index/macros-charts.js"></script>
   <script src="/static/js/index/delete-check.js"></script>
+  <script src="/static/js/index/delete-meal.js"></script>
   <script src="/static/js/index/change-date.js"></script>
   <script src="/static/js//index/mark-as-eaten.js"></script>
-
-
 
 </body>
 

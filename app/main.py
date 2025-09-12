@@ -1,11 +1,12 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+from repositories.sqlite.user_repo import SQLiteUserRepo
 from routes import main_router, meal_router, food_router, i18n_router, user_router, statistics_router, fuzzy_router
 from db.migrations_control import run_migrations
 from pathlib import Path
 from repositories.sqlite.user_repo import SQLiteUserRepo
 from db.session import db_conn
-from services import i18n_service
+from services import i18n_service, user_service
 from i18n import I18n
 
 app = FastAPI()
@@ -39,6 +40,10 @@ async def middleware(request: Request, call_next):
 
         request.state.i18n_en = i18n._load("en")
         request.state.i18n_es = i18n._load("es")
+
+        user_repo = SQLiteUserRepo(conn)
+
+        request.state.sel_lan = request.state.i18n_en if user_service.get_user_lan(user_repo, 1) == "en" else request.state.i18n_es
 
         response = await call_next(request)
         return response

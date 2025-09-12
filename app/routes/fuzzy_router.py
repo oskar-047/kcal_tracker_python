@@ -9,11 +9,12 @@ router = APIRouter()
 @router.get("/fuzzy/food-search")
 def fuzzy_food_search(
     request: Request,
-    query: str,
+    q: str,
+    max: int,
     conn = Depends(get_db)
 ):
 
     repo = SQLiteFoodRepo(conn)
-    foods, _ = food_service.fuzzy_search(repo, query, 10)
+    foods, _ = food_service.fuzzy_search(repo, q, max)
 
     return foods

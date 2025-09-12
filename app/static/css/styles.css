@@ -281,6 +281,7 @@ form label {
   color: var(--muted);
 }
 
+.gen-input,
 form input {
   width: 100%;
   padding: 8px 10px;
@@ -292,6 +293,7 @@ form input {
   font-size: 14px;
 }
 
+.gen-input:focus,
 form input:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;

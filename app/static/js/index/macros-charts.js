@@ -6,7 +6,7 @@ const fatsChartCont = document.getElementById("donut-chart-fats").querySelector(
 // today data
 const t_data = window.today;
 
-console.log(t_data);
+// console.log(t_data);
 
 kcalColor = {
   "text": ["#ffffff", "#cccccc"],
