@@ -52,11 +52,13 @@
 }
 
 .food-track{
-    display: none;
+    display: flex;
     gap: 20px;
     width: 100%;
-    padding: 5px;
     overflow: hidden;
+    transition: height 1s ease-in-out, padding 1s ease-in-out;
+    padding: 0;
+    height: 0;
 }
 .food-track input{
     width: auto;
@@ -80,22 +82,17 @@
 }
 
 /* ========== ANIMATIONS SECTION ========== */
-.appear-anim{
-    animation: appear-track-sect 0.7s forwards;
-}
-.disappear-anim{
-    animation: disappear-track-sect 0.7s forwards;
-}
-
+.food-track-anim{height: 50px; padding: 5px;}
+/* 
 @keyframes appear-track-sect { 
-    from {height: 0px}
-    to {height: 40px;}
+    from {height: 0px; padding: 0px;}
+    to 
 }
 
 @keyframes disappear-track-sect { 
-    from {height: 40px}
-    to {height: 0px;}
-}
+    from {height: 50px; padding: 5px;}
+    to {height: 0px; padding: 0px;}
+} */
 
 @media (max-width: 500px){
     .food-track{

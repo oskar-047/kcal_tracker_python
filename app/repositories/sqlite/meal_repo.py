@@ -127,7 +127,8 @@ class SQLiteMealRepo:
             SUM(m.quantity * f.fats/100) AS fats,
             SUM(m.quantity) AS q,
             MAX(f.name) AS name,
-            f.id AS id
+            f.id AS id,
+            f.color AS color
             FROM meals m
             JOIN user_food f
             ON m.food_id = f.id
@@ -151,7 +152,7 @@ class SQLiteMealRepo:
                 "fats": row["fats"],
             }
 
-            food_names[row["id"]] = row["name"]
+            food_names[row["id"]] = {"name": row["name"],"color": row["color"]}
 
 
         return food_names, result_foods

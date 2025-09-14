@@ -1,35 +1,62 @@
 const cont = document.getElementById("results-section");
+let canClose = true;
 
 cont.addEventListener("click", (e) => {
-    // Show track section
-    if(e.target.closest(".food-cont-card")){ // When a food item is clicked
-        const food = e.target.closest(".food-cont"); // gets the food item
-        const card = e.target.closest(".food-cont-card");
+    // if (e.target.closest(".food-cont-card")) {
+    //     // When a food item is clicked
+    //     const food = e.target.closest(".food-cont"); // gets the food item
+    //     const card = e.target.closest(".food-cont-card");
 
-        const its_selected = getComputedStyle(food.querySelector(".food-track")).display == "flex" ? true : false
+    //     const its_selected = getComputedStyle(food.querySelector(".food-track")).display === "flex";
 
-        // Display none on all items track section
-        food.parentElement.querySelectorAll(".food-track").forEach(e => {
-            if(getComputedStyle(e).display == "flex"){
-                console.log("WORKS");
-                e.classList.remove("appear-anim");
-                e.classList.add("disappear-anim");
-                setTimeout(() => {
-                    e.style.display = "none";
-                }, 700);
+    //     // Display none on all items track section
+    //     food.parentElement.querySelectorAll(".food-track").forEach((el) => {
+    //         if (getComputedStyle(el).display === "flex" && canClose) {
+    //             console.log("STARTS CLOSING");
+    //             el.classList.remove("food-track-anim");
+    //             // el.classList.add("disappear-anim");
+    //             // canClose = false;
+    //             el.addEventListener("transitionend", () => {
+    //                 el.style.display = "none";
+    //                 console.log("closed");
+    //                 return;
+    //             })
+    //             // setTimeout(() => {
+    //             //   el.style.display = "none";
+    //             //   canClose = true;
+    //             // }, 1000);
+    //         }
+    //     });
+
+    //     // Show track section of current clicked element
+    //     if (!its_selected) {
+    //         const trackSect = food.querySelector(".food-track");
+    //         trackSect.style.display = "flex";
+    //         void trackSect.offsetHeight; // Because display flex and the anim are on same "frame" and with void it enforces to recalculate the height again
+    //         trackSect.classList.add("food-track-anim");
+    //         // trackSect.classList.remove("disappear-anim");
+    //     }
+    // }
+
+    if (e.target.closest(".food-cont-card")) {
+        foodTrack = e.target.closest(".food-cont").querySelector(".food-track"); 
+        if(foodTrack.classList.contains("food-track-anim")){
+            foodTrack.classList.remove("food-track-anim");
+            return
+        }
+        // If some track section is displayed it will remove the class to occult them
+        cont.querySelectorAll(".food-track").forEach(item => {
+            if(item.classList.contains("food-track-anim")){
+                item.classList.remove("food-track-anim");
             }
         });
-        // Show track section of current clicked element
-        if(!its_selected){
-            const trackSect = food.querySelector(".food-track")
-            trackSect.style.display = "flex";
-            trackSect.classList.add("appear-anim");
-            trackSect.classList.remove("disappear-anim");
-        }
+
+        foodTrack.classList.toggle("food-track-anim");
     }
 
+
     // Track food
-    if(e.target.closest(".track-btn")){
+    if (e.target.closest(".track-btn")) {
         const item = e.target.closest(".track-btn");
 
         const foodId = item.dataset.foodId;
@@ -47,43 +74,15 @@ cont.addEventListener("click", (e) => {
                 dt: date
             })
         })
-        .then(data => data.json())
-        .then(status => {
-            if(status["status"] == "ok"){
-                // alert("OK");
-                // Helper function
-                showPopup(`The food ${foodName} was tracked with ${q}g.`);
-            } else{
-                showPopup("The food failed to track");
-                // alert("NOT OKAY");
-            }
-        })
+            .then(data => data.json())
+            .then(status => {
+                if (status["status"] == "ok") {
+                    // Helper function
+                    showPopup(`The food ${foodName} was tracked with ${q}g.`);
+                } else {
+                    showPopup("The food failed to track");
+                    // alert("NOT OKAY");
+                }
+            })
     }
 })
-
-// let popup, foodIdInput, invisibleBg, quantityInput
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     popup = document.getElementById("track-meal-dialog");
-//     foodIdInput = document.getElementById("food_id");
-//     quantityInput = document.getElementById("quantity");
-//     invisibleBg = document.getElementById("invisible-bg");
-
-//     document.querySelectorAll(".btn-track").forEach(btn => {
-//         btn.addEventListener("click", (e) => {
-//             foodIdInput.value = e.target.dataset.foodId;
-
-            
-//             popup.style.display = "block";
-//             invisibleBg.style.display = "block";
-            
-//             quantityInput.focus();
-//         })
-//     });
-// })
-
-
-// function occultTrackDialog(){
-//     popup.style.display = "none";
-//     invisibleBg.style.display = "none";
-// }

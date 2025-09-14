@@ -130,6 +130,16 @@
   "weight-track.section.kg-label": "Weight (kg)",
   "weight-track.section.kg-placeholder": "Enter your weight",
   "weight-track.section.date-label": "Date",
-  "weight-track.section.submit": "Save weight"
+  "weight-track.section.submit": "Save weight",
+
+  "weight-log.range.button": "Range",
+  "weight-log.menu.7d": "7 days",
+  "weight-log.menu.14d": "14 days",
+  "weight-log.menu.1m": "1 month",
+  "weight-log.menu.3m": "3 months",
+  "weight-log.menu.1y": "1 year",
+  "weight-log.menu.custom.label": "Custom (days)",
+  "weight-log.menu.custom.placeholder": "Enter days",
+  "weight-log.menu.custom.send": "Send"
 
 }

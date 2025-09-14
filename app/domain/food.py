@@ -8,7 +8,11 @@ class Food(BaseModel):
     carbs: float
     fats: float
     food_id: int | None = None
+    color: str = "#000000"
+    favorite: bool = False
+    is_default: bool = False
 
     class Config:
         extra = "ignore"
+
 

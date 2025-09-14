@@ -8,7 +8,7 @@ from services.helpers import warning
 
 def track_meal(meal_repo: MealRepo, food_id: int, quantity: int, dt: date):
 
-    dt_ts = int(datetime.combine(dt, time.min).timestamp())
+    dt_ts = int(datetime.combine(dt, time(12, 0, 0)).timestamp()) # pyright: ignore
 
     meal = Meal(food_id=food_id, quantity=quantity, tracked_date=dt_ts)
 

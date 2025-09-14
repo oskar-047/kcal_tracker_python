@@ -1,5 +1,6 @@
+from inspect import Attribute
 from domain.user import UserData
-from domain.graphs import DefaultGraph
+from domain.graphs import DefaultGraph, Attribute
 from repositories.interfaces import UserRepo, MealRepo, FoodRepo
 from schemas.user_form import UserDataEdit
 from datetime import date, datetime, time, timedelta, timezone
@@ -14,8 +15,10 @@ import calendar
 
 def generate_weight_graph(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, ctx, req: DefaultGraph):
 
-    data, weight_range, kcal_range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, req.weight_show_kcal)
-    options = _get_options(weight_range, kcal_range, req.weight_show_kcal)
+    show_kcal = True if req.attribute == Attribute.show_kcal else False
+
+    data, weight_range, kcal_range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, show_kcal)
+    options = _get_options(weight_range, kcal_range, show_kcal)
 
     return data, options
 

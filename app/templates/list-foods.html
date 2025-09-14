@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ t("food-list.head.title") }}</title>
   <link rel="stylesheet" href="/static/css/styles.css">
-  <script src="/static/js/delete-check.js"></script>
 </head>
 
 <body>
@@ -45,6 +44,7 @@
               <th>{{ t("food-list.table.delete") }}</th>
               <th>{{ t("food-list.table.edit") }}</th>
               <th>TESTING ONLY</th>
+              <th>TESTING 2 ONLY</th>
 
             </tr>
           </thead>
@@ -71,6 +71,7 @@
                 </form>
               </td>
               <td>{{ food.id }}</td>
+              <td><input data-food-id="{{ food.id }}" type="color" value="{{ food.color }}"> </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -83,7 +84,8 @@
   </main>
 
   <script src="/static/js/list-foods/i18n.js"></script>
-  <script src="/static/js/list-foods/delete-check.js"></script>
+  <!-- <script src="/static/js/list-foods/delete-check.js"></script> -->
+  <script src="/static/js/list-foods/change-color.js"></script>
 
 </body>
 

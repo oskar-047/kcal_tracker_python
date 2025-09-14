@@ -48,9 +48,10 @@ def show_statistics_HTML(
 ):
 
     return templates.TemplateResponse(
-        "weight-log.html",
+        "statistics.html",
         {
             "request": request,
+            "selected_lan": request.state.sel_lan,
             "t": request.state.t
         }
     )
@@ -66,7 +67,7 @@ def send_graph_data_weight(
     meal_repo = SQLiteMealRepo(conn)
     food_repo = SQLiteFoodRepo(conn)
 
-    print(graph_request.foods_selected_foods)
+    # print(graph_request.foods_selected_foods)
 
     data, options = statistics_service.get_graph(user_repo, meal_repo, food_repo, graph_request)
 

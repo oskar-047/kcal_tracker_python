@@ -13,19 +13,26 @@ class TimeGrouping(str, Enum):
     weekly = "weekly"
     monthly = "monthly"
 
-class DisplayMode(str, Enum):
-    quantity = "quantity"
-    kcal = "kcal"
-    protein = "protein"
-    carbs = "carbs"
-    fats = "fats"
+# class DisplayMode(str, Enum):
+#     quantity = "quantity"
+#     kcal = "kcal"
+#     protein = "protein"
+#     carbs = "carbs"
+#     fats = "fats"
+
+class Attribute(str, Enum):
+    none = "none"
+    show_kcal = "show-kcal"
+    quantity_mode = "quantity"
+    kcal_mode = "kcal"
 
 class DefaultGraph(BaseModel):
     chart_name: ChartName = ChartName.weight
-    weight_show_kcal: bool = True
+    # weight_show_kcal: bool = True
     foods_selected_foods: list[int] = [1]
-    foods_display_mode: str = DisplayMode.kcal
-    goals_show_macros: list = [False, False, False]
+    attribute: Attribute = Attribute.none
+    # foods_display_mode: str = DisplayMode.kcal
+    # goals_show_macros: list = [False, False, False]
 
 class LabelRequest(BaseModel):
     days: int

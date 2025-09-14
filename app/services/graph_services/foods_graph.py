@@ -1,5 +1,5 @@
 from domain.user import UserData
-from domain.graphs import DefaultGraph, DisplayMode
+from domain.graphs import DefaultGraph, TimeGrouping
 from repositories.interfaces import UserRepo, MealRepo, FoodRepo
 from schemas.user_form import UserDataEdit
 from datetime import date, datetime, timedelta, timezone
@@ -12,8 +12,12 @@ import calendar
 # from domain.graphs import DefaultGraph
 
 def generate_foods_graph(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, ctx, req: DefaultGraph):
-    data, range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, req.foods_selected_foods, req.foods_display_mode)
-    options = _get_options(range)
+
+    # print(req.attribute)
+    display_mode = req.attribute if req.attribute != "show-kcal" and req.attribute != "none" else "quantity"
+
+    data, v_range = _get_data(user_repo, meal_repo, food_repo, ctx.labels, ctx.time_grouping, ctx.days, req.foods_selected_foods, display_mode)
+    options = _get_options(v_range, display_mode)
 
     return data, options
 
@@ -37,6 +41,8 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
         # days_ago = (today_date - first_date).days
 
     start_date = today_date - timedelta(days=days_ago)
+    if(time_grouping == "monthly"):
+        start_date = date(start_date.year, start_date.month, 1)
     start_date_ts = t_ts(start_date)
 
     food_names, daily_tracks = meal_repo.get_meals_by_foods(start_date_ts, today_date_ts, food_list)#pyright: ignore
@@ -71,18 +77,19 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
         elif time_grouping == "weekly":
             # Iterate over the weeks
             for week in labels:
-                kcal_weekly_chunk = []
+                value_weekly_chunk = []
                 # Iterate over the week_days
                 for i in range(7):
                     today = week+timedelta(days=i)
                     if daily_tracks[today][k]:
-                        kcal_weekly_chunk.append(daily_tracks[today][k][display_mode])
+                        value_weekly_chunk.append(daily_tracks[today][k][display_mode])
                 
-                week_kcal_avg = safe_avg(kcal_weekly_chunk)
-                if week_kcal_avg is not None:
-                    max_v = max(week_kcal_avg, max_v)
-                    min_v = min(week_kcal_avg, min_v)
-                food_dataset.append(week_kcal_avg)
+                week_value_total = sum(value_weekly_chunk) # Total system
+                # week_kcal_avg = safe_avg(kcal_weekly_chunk) # Average system
+                if week_value_total is not None:
+                    max_v = max(week_value_total, max_v)
+                    min_v = min(week_value_total, min_v)
+                food_dataset.append(week_value_total)
                 
 
         # If time grouping == monthly
@@ -98,38 +105,43 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                         kcal_monthly_chunk.append(daily_tracks[today][k][display_mode])
 
                 # Calculate mins and max and append data to dataset
-                month_kcal_avg = safe_avg(kcal_monthly_chunk)
-                if month_kcal_avg is not None:
-                    max_v = max(month_kcal_avg, max_v)
-                    min_v = min(month_kcal_avg, min_v) 
-                food_dataset.append(month_kcal_avg) 
+                month_value_total = sum(kcal_monthly_chunk) # Total system
+                # month_value_avg = safe_avg(kcal_monthly_chunk) # Average system
+                if month_value_total is not None:
+                    max_v = max(month_value_total, max_v)
+                    min_v = min(month_value_total, min_v) 
+                food_dataset.append(month_value_total) 
 
+        if math.isinf(max_v): max_v = 1500
+        if math.isinf(min_v): min_v = 100
 
         color = f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
 
         data["datasets"].append({
-                "label": v,
+                "label": v["name"],
                 "data": food_dataset,
-                "borderColor": color,
+                "borderColor": v["color"],
                 "borderWidth": 2,
-                "backgroundColor": color,
+                "backgroundColor": v["color"],
                 "yAxisID": "y1"
             })         
 
     return data, [min_v *0.9, max_v*1.1]
 
-def _get_options(range: list):
+def _get_options(v_range: list, display_mode: str):
+
+    display = "KCAL" if display_mode == "kcal" else "Quantity (g)"
 
     options = {
         "responsive": True,
         "scales": {
             "y1": {
                 "beginAtZero": True,
-                "min": range[0],
-                "max": range[1],
+                "min": v_range[0],
+                "max": v_range[1],
                 "title": {
                     "display": True,
-                    "text": "KCAL",
+                    "text": display,
                     "color": "rgb(255, 255, 255, 0.3)"
                 },
                 "grid": {

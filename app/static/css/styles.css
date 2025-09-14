@@ -537,3 +537,33 @@ form select:focus {
     padding: 5px 6px;
   }
 }
+
+
+input[type=color]{
+  border-radius: 999px;
+  width: 25px;
+  height: 25px;
+  border: none;
+    padding: 0;
+    background: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* Firefox */
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}

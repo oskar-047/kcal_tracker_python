@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from time import time
 from dateutil.relativedelta import relativedelta
 
 labels = []
@@ -8,6 +9,11 @@ time_grouping = "daily"
 
 def update_labels(d: int, t_grouping: str):
     global labels, days, time_grouping
+
+    start_t = time()
+    # print(f"START: {start_t} days: {d}")
+    
+
 
     labels = []
 
@@ -37,4 +43,5 @@ def update_labels(d: int, t_grouping: str):
     days = d
     time_grouping = t_grouping
     labels_isoformat = [labels[i].isoformat() for i in range(len(labels))]
+    # print(f"FINISH: {time()-start_t}")
     return labels_isoformat

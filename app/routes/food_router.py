@@ -147,4 +147,23 @@ def delete_food(
     return RedirectResponse(url="/food/list", status_code=303)
 
 
-# === FUZZY SEARCH ===
+# === FOOD COLOR EDIT ===
+@router.get("/food/edit-color")
+def edit_food_color(
+    request: Request,
+    food_id: str,
+    color: str,
+    conn = Depends(get_db)
+):
+    repo = SQLiteFoodRepo(conn)
+
+    
+
+    ok = food_service.edit_color(repo, color, food_id)
+
+
+    if ok:
+        return {"status": "ok"}
+    
+    return {"status": "failed"}
+

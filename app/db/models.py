@@ -48,8 +48,11 @@ def init_db(conn):
         carbs       REAL    NOT NULL,
         fats        REAL    NOT NULL,
         is_deleted  BOOL    DEFAULT (0),
-        version_date INTEGER DEFAULT (strftime('%s', 'now'),
-        food_id     INTEGER DEFAULT NULL
+        version_date INTEGER DEFAULT (strftime('%s', 'now')),
+        food_id     INTEGER DEFAULT NULL,
+        color       TEXT    DEFAULT '#ffffff',
+        is_default    BOOL    DEFAULT 0,
+        favorite    BOOL    DEFAULT 0
         )
         '''
     )
@@ -63,7 +66,7 @@ def init_db(conn):
         quantity        INTEGER NOT NULL,
         tracked_date    INTEGER DEFAULT (strftime('%s', 'now')),
         meal_type       INTEGER DEFAULT 0,
-        eaten           BOOLEAN DEFAULT 0
+        eaten           BOOLEAN DEFAULT 0,
         FOREIGN KEY     (food_id) REFERENCES user_food(id) ON DELETE CASCADE
         )
         '''

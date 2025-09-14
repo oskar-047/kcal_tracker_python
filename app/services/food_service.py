@@ -31,6 +31,10 @@ def edit_food(food_repo: FoodRepo, food: FoodEdit):
 
     return food_repo.edit_food(edit_food)
 
+def edit_color(food_repo: FoodRepo, color: str, food_id: str) -> bool:
+    return food_repo.edit_food_color(color, int(food_id))
+    
+
 # ======= FUZZY SEARCH =======
 def fuzzy_search(food_repo: FoodRepo, query: str, limit: int) -> tuple[list[Food], list[float]]:
 

@@ -67,3 +67,28 @@ def migration_2(conn):
             ADD COLUMN eaten BOOLEAN DEFAULT 0
             '''
         )
+
+def migration_3(conn):
+    if not column_exists(conn, "user_food", "color"):
+        conn.execute(
+            '''
+            ALTER TABLE user_food
+            ADD COLUMN color TEXT DEFAULT '#ffffff'
+            '''
+        )
+
+def migration_4(conn):
+    if not column_exists(conn, "user_food", "is_default"):
+        conn.execute(
+            '''
+            ALTER TABLE user_food
+            ADD COLUMN is_default BOOL DEFAULT 0
+            '''
+        )
+    if not column_exists(conn, "user_food", "favorite"):
+        conn.execute(
+            '''
+            ALTER TABLE user_food
+            ADD COLUMN favorite BOOL DEFAULT 0
+            '''
+        )

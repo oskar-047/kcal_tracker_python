@@ -9,7 +9,7 @@ class SQLiteFoodRepo:
     def list_foods(self) -> list[Food]:
         rows = self.conn.execute(
             '''
-            SELECT uf.name, uf.kcal, uf.protein, uf.carbs, uf.fats, uf.id, uf.food_id, uf.version_date
+            SELECT uf.name, uf.kcal, uf.protein, uf.carbs, uf.fats, uf.id, uf.food_id, uf.version_date, uf.color, uf.is_default, uf.favorite
             FROM user_food AS uf
             JOIN (
                 SELECT food_id, max(version_date) AS version_date
@@ -89,10 +89,21 @@ class SQLiteFoodRepo:
 
         return fetch_last_inserted_row(self.conn, "user_food", last_id, Food)
 
+    def edit_food_color(self, color: str, food_id: int) -> bool:
+        cursor = self.conn.execute(
+            '''
+            UPDATE user_food 
+            SET color=?
+            WHERE id=?
+            ''',
+            (color, food_id)
+        )
+        return cursor.rowcount > 0
+
     def get_food_by_id(self, food_id) -> Food | None:
         row = self.conn.execute(
             '''
-            SELECT name, kcal, protein, carbs, fats, id, food_id
+            SELECT name, kcal, protein, carbs, fats, id, food_id, is_default, color
             FROM user_food
             WHERE id=?
             ''',
@@ -115,3 +126,29 @@ class SQLiteFoodRepo:
         ).fetchall()
 
         return [Food(**row) for row in rows]
+
+    def set_default_food(self, food_id: int) -> bool:
+        cursor = self.conn.execute(
+            '''
+            UPDATE user_food
+            SET is_default=1
+            WHERE food_id=?
+            ''',
+            (food_id)
+        )
+
+        return cursor.rowcount > 0
+
+
+    def unset_default_food(self, food_id: int) -> bool:
+        cursor = self.conn.execute(
+            '''
+            UPDATE user_food
+            SET is_default=0
+            WHERE food_id=?
+            ''',
+            (food_id)
+        )
+
+        return cursor.rowcount > 0
+    

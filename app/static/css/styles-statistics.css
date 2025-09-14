@@ -1,0 +1,365 @@
+:root {
+  --bg: #0f1216;
+  --bg-elev: #161a20;
+  --text: #e6e9ef;
+  --muted: #9aa4b2;
+  --accent: #4cc38a;
+  --card: #12161c;
+  --border: #232a34;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+}
+
+#container > div {
+  width: 600px;
+  margin: auto;
+}
+
+#weight-chart h2 {
+  color: red;
+}
+
+#weight-chart canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.gen-select {
+  min-width: 140px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.gen-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ========== ATTRIBUTES ========== */
+#attribute-select-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 5px;
+  color: var(--text);
+}
+
+.attribute {
+  border-radius: clamp(3px, 1vw, 10px);
+  background-color: var(--bg-elev);
+  padding: 4px 12px;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid var(--border);
+  color: rgb(90, 90, 90);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.attribute:hover {
+  transform: scale(1.05);
+}
+
+.attribute-selected {
+  border: 1px solid var(--accent);
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  #attribute-select-cont {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 500px) {
+  #foods-chart-selecter {
+    width: 90%;
+  }
+}
+
+/* ========== DAYS SELECT DROPDOWN ========== */
+.btn-range {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+
+.btn-range:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.menu {
+  position: absolute;
+  margin-top: 8px;
+  min-width: 260px;
+  z-index: 30;
+  background: var(--bg-elev);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  margin: 6px 0;
+  cursor: pointer;
+  transition: background-color .12s ease, transform .12s ease, opacity .12s ease;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, .05);
+  transform: translateY(-1px);
+}
+
+.menu-item:active {
+  transform: translateY(0);
+  opacity: .95;
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.menu-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+  border-radius: 1px;
+}
+
+.menu-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 4px;
+}
+
+.menu-row {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+}
+
+.menu-input::placeholder {
+  color: var(--muted);
+}
+
+.menu-send {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: #0b1512;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.menu-send:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+/* === CSS: FOOD CHART SELECTOR click-to-select === */
+#foods-chart-selecter {
+  --pin-size: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 8px;
+  max-width: 360px;
+  margin: 0 auto;
+  font-size: 0.9rem;
+}
+
+#foods-chart-selecter h2 {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: .02em;
+}
+
+#search-bar {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: .35rem .55rem;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .04);
+  color: inherit;
+  outline: none;
+}
+
+#selected-foods,
+#searched-foods {
+  min-height: 120px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .03);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#selected-foods { grid-column: 1; }
+#searched-foods { grid-column: 2; }
+
+/* Selected items */
+.selected-food-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 65px;
+  gap: 6px;
+  padding: .25rem .5rem;
+  padding-right: calc(var(--pin-size) + 18px);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid transparent;
+}
+
+.selected-food-item:hover { border-color: rgba(255, 255, 255, .18); }
+
+.selected-food-item h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+}
+
+.delete-food-button {
+  position: absolute !important;
+  /* top: 50%; */
+  right: 5px;
+  bottom: -10px;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: .2rem .5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Search items: click whole row */
+.search-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 70px;
+  gap: 6px;
+  padding: .25rem .5rem;
+  padding-right: calc(var(--pin-size) + 18px); /* espacio extra para flecha y pin */
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .08s ease, background-color .12s ease, border-color .12s ease;
+}
+
+.search-item::after {
+  content: "›"; /* flecha indicativa */
+  position: absolute;
+  right: .4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .7;
+  font-size: 1.4rem;
+}
+
+.search-item:hover {
+  transform: scale(1.01);
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .18);
+}
+
+.search-item:active {
+  transform: scale(0.995);
+  background: rgba(255, 255, 255, .08);
+}
+
+.search-item h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(0.8rem, 2.6vw, 1.05rem);
+}
+
+/* Pin fixed top-right */
+.pin-wrapper {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: var(--pin-size);
+  height: var(--pin-size);
+  z-index: 0;
+}
+
+.pin-food-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.pin-overlay {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 27%;
+  height: 0;
+  background-color: white;
+  pointer-events: none;
+  transition: height 0.7s ease-in-out;
+}
+
+.pin-overlay.pinned { height: 43%; }
