@@ -1,6 +1,6 @@
 import sqlite3
 from repositories.sqlite.helpers import fetch_last_inserted_row, get_row_by_id
-from domain.food import Food
+from domain.food import Food, FoodId
 
 class SQLiteFoodRepo:
     def __init__(self, conn):
@@ -63,7 +63,7 @@ class SQLiteFoodRepo:
         cursor = self.conn.execute(
             '''
             UPDATE user_food
-            SET is_deleted = 1
+            SET is_deleted = 1, is_default = 0
             WHERE id=?
             ''',
             (id,)
@@ -78,11 +78,11 @@ class SQLiteFoodRepo:
         cursor = self.conn.execute(
             '''
             
-                INSERT INTO user_food (name, kcal, protein, carbs, fats, food_id, version_date)
-                VALUES (?, ?, ?, ?, ?, ?, strftime('%s', 'now'))
+                INSERT INTO user_food (name, kcal, protein, carbs, fats, food_id, is_default, color, version_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%s', 'now'))
             
             ''',
-            (food.name, food.kcal, food.protein, food.carbs, food.fats, food.food_id)
+            (food.name, food.kcal, food.protein, food.carbs, food.fats, food.food_id, food.is_default, food.color)
         )
 
         last_id = cursor.lastrowid
@@ -132,23 +132,32 @@ class SQLiteFoodRepo:
             '''
             UPDATE user_food
             SET is_default=1
-            WHERE food_id=?
+            WHERE id=?
             ''',
-            (food_id)
+            (food_id,)
         )
 
         return cursor.rowcount > 0
 
 
-    def unset_default_food(self, food_id: int) -> bool:
+    def unset_all_default_food(self) -> bool:
         cursor = self.conn.execute(
             '''
             UPDATE user_food
             SET is_default=0
-            WHERE food_id=?
-            ''',
-            (food_id)
+            '''
         )
 
-        return cursor.rowcount > 0
+        return True
+        # return cursor.rowcount > 0
     
+    def get_default_food(self) -> FoodId | None:
+        row = self.conn.execute(
+            '''
+            SELECT id AS food_id, name
+            FROM user_food
+            WHERE is_default=1
+            '''
+        ).fetchone()
+
+        return FoodId(**row) if row else None

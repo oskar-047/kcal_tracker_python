@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ t("food-list.head.title") }}</title>
   <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles-list-foods.css">
 </head>
 
 <body>
@@ -19,7 +20,7 @@
       <h2 id="history-title">{{ t("food-list.body.heading") }}</h2>
 
       <!-- Search -->
-      <section class="card" aria-labelledby="search-title">
+      <!-- <section class="card" aria-labelledby="search-title">
         <h2 id="search-title" style="font-size:16px;margin-bottom:8px;">{{ t("food-list.search.title") }}</h2>
         <form style="display: flex; flex-direction: row;" action="/food/list/search" method="GET" role="search"
           autocomplete="off">
@@ -31,7 +32,34 @@
         </form>
       </section>
 
-      {% if foods %}
+      <div id="listed-items">
+        <div class="food-cont-card">
+          <h2 class="food-title">NOMBRE</h2>
+          <h3 class="food-kcal">{{ t("add-meal.table.kcal") }}: KCAL</h3>
+          <div class="food-macros">
+            <p class="food-macros">{{ t("add-meal.table.protein") }}: PROTEIN</p>
+            <p class="food-macros">{{ t("add-meal.table.carbs") }}: CARBS</p>
+            <p class="food-macros">{{ t("add-meal.table.fats") }}: FATS</p>
+            <div class="star"></div>
+            <div class="edit"></div>
+            <div class="bin"></div>
+
+          </div>
+        </div>
+      </div> -->
+      <section class="card" aria-labelledby="search-title">
+        <h2 id="search-title" style="font-size:16px;margin-bottom:8px;">{{ t("food-list.search.title") }}</h2>
+        <input id="search-query" class="gen-input" type="text" placeholder="{{ t('food-list.search.placeholder') }}" autofocus
+          enterkeyhint="search">
+      </section>
+
+      <section aria-labelledby="results-title">
+        <h2 id="results-title" style="font-size:16px;margin-bottom:8px;">{{ t("add-meal.results.title") }}</h2>
+        <div id="listed-items"></div>
+      </section>
+
+
+      <!-- {% if foods %}
       <div class="table-wrapper">
         <table class="food-table">
           <thead>
@@ -79,13 +107,19 @@
       </div>
       {% else %}
       <p class="empty">{{ t("food-list.body.no-foods") }}</p>
-      {% endif %}
+      {% endif %} -->
     </div>
   </main>
+
+  <script>
+    window.I18N = JSON.parse('{{ selected_lan | tojson | safe }}');
+    window.t = (k) => window.I18N[k] || k
+  </script>
 
   <script src="/static/js/list-foods/i18n.js"></script>
   <!-- <script src="/static/js/list-foods/delete-check.js"></script> -->
   <script src="/static/js/list-foods/change-color.js"></script>
+  <script src="/static/js/list-foods/live-search.js"></script>
 
 </body>
 

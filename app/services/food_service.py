@@ -1,4 +1,4 @@
-from domain.food import Food
+from domain.food import Food, FoodId
 from repositories.interfaces import FoodRepo
 from schemas.food_edit import FoodEdit
 from services import fuzzy_service
@@ -20,14 +20,19 @@ def delete_food(food_repo: FoodRepo, id: int):
 
 def edit_food(food_repo: FoodRepo, food: FoodEdit):
 
-    edit_food = Food(
+    edit_food:Food = Food(
         name=food.name,
         kcal=to_int(food.kcal),
         protein=to_float(food.protein),
         carbs=to_float(food.carbs),
         fats=to_float(food.fats),
-        food_id=to_int(food.food_id)
+        food_id=to_int(food.food_id),
+        is_default=to_int(food.is_default),
+        color=food.color
     )
+
+    if edit_food.is_default == 1:
+        food_repo.unset_all_default_food()
 
     return food_repo.edit_food(edit_food)
 
@@ -47,3 +52,15 @@ def fuzzy_search(food_repo: FoodRepo, query: str, limit: int) -> tuple[list[Food
 
 def get_food_by_id(food_repo: FoodRepo, food_id: int) -> Food | None:
     return food_repo.get_food_by_id(food_id)
+
+# === DEFAULT FOOD SYSTEM ===
+def pin_food(food_repo: FoodRepo, food_id: FoodId):
+    ok = food_repo.unset_all_default_food()
+
+    if(ok):
+        return food_repo.set_default_food(food_id.food_id)
+    else:
+        return ok
+
+def get_pined_food(food_repo: FoodRepo) -> FoodId | None:
+    return food_repo.get_default_food()

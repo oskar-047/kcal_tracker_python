@@ -112,8 +112,7 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                     min_v = min(month_value_total, min_v) 
                 food_dataset.append(month_value_total) 
 
-        if math.isinf(max_v): max_v = 1500
-        if math.isinf(min_v): min_v = 100
+        
 
         color = f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
 
@@ -124,7 +123,9 @@ def _get_data(user_repo: UserRepo, meal_repo: MealRepo, food_repo: FoodRepo, lab
                 "borderWidth": 2,
                 "backgroundColor": v["color"],
                 "yAxisID": "y1"
-            })         
+            })  
+    if math.isinf(max_v): max_v = 1500
+    if math.isinf(min_v): min_v = 100       
 
     return data, [min_v *0.9, max_v*1.1]
 

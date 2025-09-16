@@ -1,0 +1,99 @@
+:root {
+  --bg: #0f1216;
+  --bg-elev: #161a20;
+  --text: #e6e9ef;
+  --muted: #9aa4b2;
+  --accent: #4cc38a;
+  --card: #12161c;
+  --border: #232a34;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --radius: 12px;
+}
+
+#listed-items{
+  display:grid;
+  gap:8px;
+}
+
+.food-cont-card{
+  position:relative;
+  display:grid;
+  padding:10px 116px 10px 10px;
+  color:var(--text);
+  background-color:var(--bg-elev);
+  border-radius:10px;
+  border:2px solid var(--border);
+  line-height:18px;
+  transition:transform .08s ease, background-color .12s ease, border-color .12s ease;
+  box-shadow:var(--shadow);
+}
+.food-cont-card:hover{ transform:scale(1.01); background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.18); }
+.food-cont-card:active{ transform:scale(.995); background:rgba(255,255,255,.08); }
+
+.food-cont-card h2{ font-size:clamp(.85rem,1vw,3rem); margin:0; }
+.food-cont-card h3{ font-size:clamp(.75rem,.85vw,2rem); color:var(--muted); margin:4px 0 0 0; }
+.food-cont-card p{  font-size:clamp(.7rem,.75vw,1.9rem); color:var(--muted); margin:6px 12px 0 0; }
+
+.food-macros{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:15px;
+}
+
+.food-cont-card .star,
+.food-cont-card .edit,
+.food-cont-card .bin,
+.food-cont-card .color{
+  position:absolute;
+  top:8px;
+  cursor:pointer;
+  opacity:.9;
+  transition:transform .08s ease, opacity .12s ease;
+}
+
+.food-cont-card .color{
+  top: auto;
+  bottom: 9px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  opacity:1;
+}
+
+.food-cont-card .star{ right:72px; }
+.food-cont-card .edit{ right:40px; }
+.food-cont-card .bin{  right:8px;  }
+.food-cont-card .star:hover,
+.food-cont-card .edit:hover,
+.food-cont-card .bin:hover,
+.food-cont-card .color:hover{ transform:scale(1.05); opacity:1; }
+
+.empty{ color:var(--muted); padding:8px 0; }
+
+@media (max-width:500px){
+  .food-cont-card{ padding-right:112px; }
+  .food-cont-card p{ margin-top:4px; }
+  .food-macros{ gap: 4px; margin-top: 10px;}
+}
+
+
+.star{
+  background-image: url("/static/img/star-no-fill.svg");
+  background-size: cover;
+  width: 34px;
+  height: 32px;
+}
+
+.edit,
+.bin{
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.edit{background-image: url("/static/img/edit.svg");}
+.bin{background-image: url("/static/img/bin.png");}
+

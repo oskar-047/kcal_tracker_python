@@ -15,4 +15,7 @@ class Food(BaseModel):
     class Config:
         extra = "ignore"
 
+class FoodId(BaseModel):
+    food_id: int
+    name: str = "ALCACHOFA"
 

@@ -36,7 +36,13 @@ searchedFoodsEl.addEventListener("click", (e) => {
     const foodName = item.dataset.foodName;
     const isPinned = item.dataset.pinned === "true";
 
-    if (!window.SelectedFoods.getSelectedFoods().includes(foodId)) {
+    // If the clicked food is not already selected
+    selectFood(foodId, foodName, isPinned);
+  }
+});
+
+function selectFood(foodId, foodName, isPinned){
+  if (!window.SelectedFoods.getSelectedFoods().includes(foodId)) {
       const selectedFoodItem = document.createElement("div");
       selectedFoodItem.classList.add("selected-food-item");
       selectedFoodItem.dataset.foodId = foodId;
@@ -60,9 +66,10 @@ searchedFoodsEl.addEventListener("click", (e) => {
     } else {
       alert("Food already selected");
     }
-  }
-});
+}
 
+
+// ========= SEARCH FOOD LOGIC =========
 async function searchFoods(query) {
   const response = await fetch(`/fuzzy/food-search?q=${encodeURIComponent(query)}&max=5`);
   const foodData = await response.json();
@@ -75,16 +82,19 @@ async function searchFoods(query) {
       const d = foodData[i];
       const searchItem = document.createElement("div");
       searchItem.classList.add("search-item");
-      searchItem.dataset.foodId = d.food_id;
+      searchItem.dataset.foodId = d.id;
       searchItem.dataset.foodName = d.name;
       searchItem.dataset.pinned = d.is_default === true ? "true" : "false";
 
+      // searchItem.innerHTML = `
+      //   <h3></h3>
+      //   <div class="pin-wrapper">
+      //     <img src="/static/img/pin.svg" class="pin-food-icon">
+      //     <div class="pin-overlay${d.is_default ? " pinned" : ""}"></div>
+      //   </div>
+      // `;
       searchItem.innerHTML = `
         <h3></h3>
-        <div class="pin-wrapper">
-          <img src="/static/img/pin.svg" class="pin-food-icon">
-          <div class="pin-overlay${d.is_default ? " pinned" : ""}"></div>
-        </div>
       `;
 
       searchItem.querySelector("h3").textContent = d.name;

@@ -5,7 +5,7 @@ DB_PATH = (Path(__file__).resolve().parent / "app_database.db")
 
 def get_db():
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 
     # This is how sqlite returns the data, per default it returns a tuple that must be accesed by index, with sqlite3.row it returns a object similar to a dictionary where you can acces by column name
     conn.row_factory = sqlite3.Row

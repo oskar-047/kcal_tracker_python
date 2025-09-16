@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query, HTTPException
+from fastapi import FastAPI, Request, APIRouter, Depends, Form, Query, HTTPException, Body
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from app_config import templates
 from db.database import get_db
-from domain.food import Food
+from domain.food import Food, FoodId
 from repositories.sqlite.food_repo import SQLiteFoodRepo
 from services import food_service
 from schemas.food_edit import FoodEdit
@@ -36,7 +36,8 @@ def show_food_list_HTML(request: Request, conn = Depends(get_db)):
         {
             "request": request,
             "t": request.state.t,
-            "foods": foods
+            "selected_lan": request.state.sel_lan
+            # "foods": foods
         }
     )
 
@@ -75,6 +76,8 @@ def show_edit_food_HTML(
     repo = SQLiteFoodRepo(conn)
 
     food = food_service.get_food_by_id(repo, food_id)
+
+    print(food)
 
     return templates.TemplateResponse(
         "edit-food.html",
@@ -157,13 +160,33 @@ def edit_food_color(
 ):
     repo = SQLiteFoodRepo(conn)
 
-    
-
     ok = food_service.edit_color(repo, color, food_id)
-
 
     if ok:
         return {"status": "ok"}
     
     return {"status": "failed"}
 
+# === PIN FOOD ITEM ===
+@router.post("/food/pin-food")
+def pin_food(
+    request: Request,
+    food_id: FoodId,
+    conn = Depends(get_db)
+): 
+    repo = SQLiteFoodRepo(conn)
+
+    ok = food_service.pin_food(repo, food_id)
+
+    return {"status": "ok"} if ok else {"status": "failed"}
+
+@router.get("/food/get-pined")
+def get_pined(
+    request: Request,
+    conn = Depends(get_db)
+): 
+    repo = SQLiteFoodRepo(conn)
+
+    food = food_service.get_pined_food(repo)
+
+    return food
