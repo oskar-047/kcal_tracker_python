@@ -11,6 +11,7 @@ class FoodEdit(BaseModel):
     food_id: str
     is_default: int
     color: str
+    favorite: int
 
     @classmethod
     def as_form(
@@ -22,7 +23,8 @@ class FoodEdit(BaseModel):
         fats: str = Form(...),
         food_id: str = Form(...),
         is_default: str = Form(...),
-        color: str = Form(...)
+        color: str = Form(...),
+        favorite: str = Form(...)
     ):
 
         d = locals().copy()

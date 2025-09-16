@@ -45,20 +45,7 @@ def food_fuzzy_search(
     foods, scores = food_service.fuzzy_search(repo, query, 10)
 
     return foods
-    # dt = datetime.now().replace(microsecond=0).strftime("%Y-%m-%dT%H:%M")
 
-    # return templates.TemplateResponse(
-    #     "add-meal.html",
-    #     {
-    #         "request": request,
-    #         "date": dt,
-    #         "foods": foods,
-    #         "scores": scores,
-    #         "query": query,
-    #         "t": request.state.t,
-    #         "selected_lan": request.state.sel_lan
-    #     }
-    # )
 
 
 # ======= MEAL TRACK =======

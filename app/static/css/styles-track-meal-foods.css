@@ -20,6 +20,7 @@
 }
 
 .food-cont-card{
+    position: relative;
     display: grid;
     padding: 10px;
     margin: 5px 0px;
@@ -95,16 +96,32 @@
 
 /* ========== ANIMATIONS SECTION ========== */
 .food-track-anim{height: 50px; padding: 5px;}
-/* 
-@keyframes appear-track-sect { 
-    from {height: 0px; padding: 0px;}
-    to 
+
+/* ===== FAVORITE ===== */
+.star{
+  background-image: url("/static/img/star-no-fill.svg");
+  background-size: cover;
+  width: 34px;
+  height: 32px;
+  position:absolute;
+  top:8px;
+  right: 8px;
+  cursor:pointer;
+  opacity:.9;
+  transition:transform .08s ease, opacity .12s ease;
 }
 
-@keyframes disappear-track-sect { 
-    from {height: 50px; padding: 5px;}
-    to {height: 0px; padding: 0px;}
-} */
+.star:hover{
+    transform: scale(1.05);
+}
+
+.star:active{
+  transform: scale(0.96) !important;
+}
+
+.favorite{
+  background-image: url("/static/img/star-fill.svg");
+}
 
 @media (max-width: 500px){
     .food-track{

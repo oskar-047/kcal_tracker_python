@@ -28,7 +28,7 @@
   box-shadow:var(--shadow);
 }
 .food-cont-card:hover{ transform:scale(1.01); background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.18); }
-.food-cont-card:active{ transform:scale(.995); background:rgba(255,255,255,.08); }
+/* .food-cont-card:active{ transform:scale(.995); background:rgba(255,255,255,.08); } */
 
 .food-cont-card h2{ font-size:clamp(.85rem,1vw,3rem); margin:0; }
 .food-cont-card h3{ font-size:clamp(.75rem,.85vw,2rem); color:var(--muted); margin:4px 0 0 0; }
@@ -83,6 +83,14 @@
   background-size: cover;
   width: 34px;
   height: 32px;
+}
+
+.star:active{
+  transform: scale(0.96) !important;
+}
+
+.favorite{
+  background-image: url("/static/img/star-fill.svg");
 }
 
 .edit,

@@ -5,6 +5,7 @@ function renderFoods(foods){
   listed.innerHTML = "";
   if (foods && foods.length){
     foods.forEach(food => {
+      let favorite = food.favorite == 1 ? "favorite" : "";
       const block = `
         <div class="food-cont-card">
           <h2 class="food-title">${food.name}</h2>
@@ -15,8 +16,8 @@ function renderFoods(foods){
             <p>${window.t("add-meal.table.fats")}: ${food.fats}</p>
           </div>
 
-          <!-- FAVORITE (no lógica extra) -->
-          <div class="star" title="favorite"></div>
+          <!-- FAVORITE -->
+          <div data-food-id="${food.id}" class="star ${favorite}" title="favorite"></div>
 
           <!-- EDIT -->
           <form method="get" action="/food/edit-food">
@@ -40,9 +41,15 @@ function renderFoods(foods){
 }
 
 searchBar.addEventListener("input", () => {
+  search();
+});
+
+function search(){
   const query = searchBar.value;
   fetch(`/meals/track/search?query=${encodeURIComponent(query)}`)
     .then(r => r.json())
     .then(renderFoods)
     .catch(() => { listed.innerHTML = `<p class="empty">${window.t("add-meal.results.empty")}</p>`; });
-});
+}
+
+search();

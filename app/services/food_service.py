@@ -28,7 +28,8 @@ def edit_food(food_repo: FoodRepo, food: FoodEdit):
         fats=to_float(food.fats),
         food_id=to_int(food.food_id),
         is_default=to_int(food.is_default),
-        color=food.color
+        color=food.color,
+        favorite=food.favorite
     )
 
     if edit_food.is_default == 1:
@@ -64,3 +65,9 @@ def pin_food(food_repo: FoodRepo, food_id: FoodId):
 
 def get_pined_food(food_repo: FoodRepo) -> FoodId | None:
     return food_repo.get_default_food()
+
+def toggle_favorite(food_repo: FoodRepo, id: str) -> bool:
+    return food_repo.toggle_favorite(int(id))
+
+# def unset_food_as_favorite(food_repo: FoodRepo, id: str) -> bool:
+#     return food_repo.unset_food_as_favorite(int(id))

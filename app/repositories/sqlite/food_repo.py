@@ -22,16 +22,18 @@ class SQLiteFoodRepo:
             '''
         ).fetchall()
 
-        food_list: list[Food] = []
+        return [Food(**row) for row in rows]
 
-        for row in rows:
-            dict_row = dict(row)
+        # food_list: list[Food] = []
 
-            food = Food(**dict_row)
+        # for row in rows:
+        #     dict_row = dict(row)
 
-            food_list.append(food)
+        #     food = Food(**dict_row)
 
-        return food_list
+        #     food_list.append(food)
+
+        # return food_list
 
     def create_food(self, food: Food) -> Food:
         cursor = self.conn.execute(
@@ -78,11 +80,11 @@ class SQLiteFoodRepo:
         cursor = self.conn.execute(
             '''
             
-                INSERT INTO user_food (name, kcal, protein, carbs, fats, food_id, is_default, color, version_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%s', 'now'))
+                INSERT INTO user_food (name, kcal, protein, carbs, fats, food_id, is_default, color, favorite, version_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%s', 'now'))
             
             ''',
-            (food.name, food.kcal, food.protein, food.carbs, food.fats, food.food_id, food.is_default, food.color)
+            (food.name, food.kcal, food.protein, food.carbs, food.fats, food.food_id, food.is_default, food.color, food.favorite)
         )
 
         last_id = cursor.lastrowid
@@ -103,7 +105,7 @@ class SQLiteFoodRepo:
     def get_food_by_id(self, food_id) -> Food | None:
         row = self.conn.execute(
             '''
-            SELECT name, kcal, protein, carbs, fats, id, food_id, is_default, color
+            SELECT name, kcal, protein, carbs, fats, id, food_id, is_default, color, favorite
             FROM user_food
             WHERE id=?
             ''',
@@ -161,3 +163,25 @@ class SQLiteFoodRepo:
         ).fetchone()
 
         return FoodId(**row) if row else None
+
+    def toggle_favorite(self, id) -> bool:
+        self.conn.execute(
+            '''
+            UPDATE user_food
+            SET favorite = CASE WHEN favorite=1 THEN 0 ELSE 1 END
+            WHERE id=?
+            ''',
+            (id,)
+        )
+
+        return bool(self.conn.execute('SELECT favorite FROM user_food WHERE id=?',(id,)).fetchone()["favorite"])
+
+    # def unset_food_as_favorite(self, id) -> bool:
+    #     return self.conn.execute(
+    #         '''
+    #         UPDATE user_food
+    #         SET favorite=0
+    #         WHERE id=?
+    #         ''',
+    #         (id,)
+    #     ).rowcount > 0

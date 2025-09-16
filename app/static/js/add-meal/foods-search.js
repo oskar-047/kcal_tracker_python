@@ -2,26 +2,21 @@ const searchBar = document.getElementById("search-query");
 const resultsSection = document.getElementById("results-section");
 
 searchBar.addEventListener("input", e => {
-
-    query = searchBar.value;
-
-    // encodeURIComponent converts the string to a safe url string
-    fetch(`/meals/track/search?query=${encodeURIComponent(query)}`, {})
-        .then(data => data.json())
-        .then(data => createResults(data));
+  search();
 })
 
 function createResults(foods) {
-    console.log(foods);
+  // console.log(foods);
 
-    // split cuts the string on "T" and returns an array with 2 values, before and after the cut
-    t_dt = new Date().toISOString().split("T")[0];
+  // split cuts the string on "T" and returns an array with 2 values, before and after the cut
+  t_dt = new Date().toISOString().split("T")[0];
 
-    resultsSection.innerHTML = "";
+  resultsSection.innerHTML = "";
 
-    if (foods && foods.length > 0) {
-        foods.forEach(food => {
-            const block = `
+  if (foods && foods.length > 0) {
+    foods.forEach(food => {
+      let favorite = food.favorite == 1 ? "favorite" : "";
+      const block = `
       <div class="food-cont">
         <div class="food-cont-card">
           <h2 class="food-title">${food.name}</h2>
@@ -31,6 +26,7 @@ function createResults(foods) {
             <p class="food-macros">${window.t("add-meal.table.carbs")}: ${food.carbs}</p>
             <p class="food-macros">${window.t("add-meal.table.fats")}: ${food.fats}</p>
           </div>
+          <div data-food-id="${food.id}" class="star ${favorite}" title="favorite"></div>
         </div>
 
         <div class="food-track">
@@ -40,9 +36,20 @@ function createResults(foods) {
         </div>
       </div>
     `;
-            resultsSection.insertAdjacentHTML("beforeend", block);
-        });
-    } else {
-        resultsSection.innerHTML = `<p class="empty">${window.t("add-meal.results.empty")}</p>`;
-    }
+      resultsSection.insertAdjacentHTML("beforeend", block);
+    });
+  } else {
+    resultsSection.innerHTML = `<p class="empty">${window.t("add-meal.results.empty")}</p>`;
+  }
 }
+
+
+function search() {
+  query = searchBar.value;
+  // encodeURIComponent converts the string to a safe url string
+  fetch(`/meals/track/search?query=${encodeURIComponent(query)}`, {})
+    .then(data => data.json())
+    .then(data => createResults(data));
+}
+
+search();

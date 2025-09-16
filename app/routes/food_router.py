@@ -190,3 +190,14 @@ def get_pined(
     food = food_service.get_pined_food(repo)
 
     return food
+
+# === SET/UNSET FOOD AS FAVORITE ===
+@router.put("/food/toggle-favorite")
+def toggle_fav_food(
+    request: Request,
+    f_id: str = Body(..., embed=True),
+    conn = Depends(get_db)
+):
+    repo = SQLiteFoodRepo(conn)
+
+    return food_service.toggle_favorite(repo, f_id)
